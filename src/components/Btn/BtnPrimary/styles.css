@@ -1,0 +1,42 @@
+.btn-primary{
+    height: 52px;
+
+    font-size: 16px;
+    font-family: Inter;
+    color: #fff;
+ 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
+
+    border: none;
+    border-radius: 20px;
+    outline: none;
+
+    padding: 16px 24px;
+
+    background-color: #3051FF;
+
+    cursor: pointer;
+}
+
+.btn-primary:hover{
+    opacity: .8;
+}
+
+.btn-svg{
+    padding: 16px ;
+}
+
+.warning {
+    background-color: #FF8E0C;
+}
+
+.danger {
+    background-color: #FF4040;
+}
+
+.success {
+    background-color: #10B981;
+}

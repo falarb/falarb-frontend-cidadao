@@ -1,0 +1,10 @@
+.main-container{
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 258px);
+    margin: 0;
+    padding: 24px;
+    position: absolute;
+    left: 210px;
+    top: 80px;
+}

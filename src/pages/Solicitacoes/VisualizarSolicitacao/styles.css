@@ -1,0 +1,36 @@
+.nav-tools{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    width: max-content;
+}
+
+.svg-map{
+    margin-left: 10px;
+}
+
+.box-info{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 0 0 20px 0; 
+}
+
+
+
+.font-size-m{
+    font-size: 26px;
+    margin: 0;
+}
+
+.font-size-p{
+    font-size: 16px;
+    margin: 0;
+    color: #BDBDBD;
+}
+
+.box-geolocalizacao{
+    display: flex;
+    gap: 70px;
+}

@@ -1,0 +1,26 @@
+.btn-small-secundary{
+    height: 52px;
+
+    font-size: 16px;
+    font-family: Inter;
+    color: #344054;
+ 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
+
+    border: 2px solid #D9D9D9;
+    border-radius: 20px;
+    outline: none;
+
+    padding: 16px 24px;
+
+    background-color: #fff;
+
+    cursor: pointer;
+}
+
+.btn-small-secundary:hover{
+    opacity: .7;
+}
