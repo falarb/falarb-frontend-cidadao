@@ -1,0 +1,59 @@
+.nav-tools {
+    display: flex;
+    gap: 10px;
+}
+
+.container-info-user {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.container-info-user .info-system {
+    background-color: #3232231c;
+    width: max-content;
+    padding: 10px 20px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+}
+
+.container-info-user .info-system .id {
+    background-color: #fff;
+    width: max-content;
+    padding: 4px;
+    border-radius: 10px;
+    color: #8f8f8f;
+}
+
+.container-info-user h2 {
+    margin: 0;
+    font-size: 26px;
+}
+
+
+.box-info{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 0 0 20px 0; 
+}
+
+.font-size-m{
+    font-size: 26px;
+    margin: 0;
+}
+
+.font-size-p{
+    font-size: 16px;
+    margin: 0;
+    color: #BDBDBD;
+}
+
+.container-mini-dashboard-user{
+    margin: 0 0 0 30px;
+}

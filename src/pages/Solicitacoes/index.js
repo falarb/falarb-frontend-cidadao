@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import TableFiveColuns from "../../components/TableFiveColuns";
-import TableHeader from "../../components/TableFiveColuns/TableHeader";
-import TableItem from "../../components/TableFiveColuns/TableItem";
-import TableItemEmpty from "../../components/TableFiveColuns/TableItemEmpty"
-import TableFooter from "../../components/TableFiveColuns/TableFooter";
+import TableFiveColuns from "../../components/TableFive";
+import TableHeader from "../../components/TableFive/TableHeader";
+import TableItem from "../../components/TableFive/TableItem";
+import TableItemEmpty from "../../components/TableFive/TableItemEmpty"
+import TableFooter from "../../components/TableFive/TableFooter";
 import Erro from "../../components/Mensagem/Erro";
 import Modal from "../../components/Modal";
 import Filtros from "../../components/Filtros";
@@ -45,11 +45,10 @@ export default function Solicitacoes() {
 
     }, [search]);
 
-    // requisição feita assim que o componente montar
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
-            setError(null); // limpa erro anterior
+            setError(null); 
 
             try {
                 const response = await fetch(`http://127.0.0.1:8000/api/condominios/?page=${page}&status=${status}&search=${debouncedSearch}&sort_by=${sort_by}&sort_order=${sort_order}&tipo_pedido=${tipo_pedido}&comunidade=${comunidade}`);
@@ -79,14 +78,53 @@ export default function Solicitacoes() {
         fetchData();
     }, [page, status, debouncedSearch, sort_by, sort_order, tipo_pedido, comunidade]);
 
+    const handleDeleteSolicitacao = async () => {
+
+        try{
+            setError(null)
+
+            const response = await fetch (`http://127.0.0.1:8000/api/usuarios/${solicitacaoSelecionada.id}`,
+                {
+                    method: 'DELETE',
+                    headers:{
+                        'Accept': 'application/json',
+                    },
+                }
+            )
+            if(!response.ok) {
+                setError(response.status)
+            }
+
+            alert('Excluido com sucesso.');
+            window.location.reload();
+        
+        } catch(error) {
+            setError(error.mensagem);
+        }
+    }
+
     return (
         <>
-
         {error && <Erro mensagem={error} onClose={null} />}
         {loading && <Loading />}
+        {mostrarModalDelete && solicitacaoSelecionada && (<Modal 
+                type='danger'
+                title='Excluir solicitação'
+                description={`Você solicitou excluir o seguinte condomínio: ${solicitacaoSelecionada.nome}. Essa alteração não pode ser desfeita. Você tem certeza?`}
+                onConfirm={ () => {
+                    //handleDeleteSolicitacao()
+                    alert('delete')
+                    setAbrirModalDelete(false)
+                    window.location.reload()
+                }}
+                onCancel={ () => {
+                    setAbrirModalDelete(false)
+                }}
+            />)}   
 
         <div className="navTools">
             <BtnSecundary
+                adicionalClass='btn-svg'
                 onClick={ () => {
                     navigate('/')
                 }}
@@ -95,10 +133,10 @@ export default function Solicitacoes() {
             </BtnSecundary>
             <BtnPrimary
                 onClick={ () => {
-                    navigate('/relatorios')
+                    navigate('/')
                 }}
             >
-                Relatórios
+                Cadastrar
             </BtnPrimary>
         </div>
 
@@ -166,6 +204,7 @@ export default function Solicitacoes() {
 
                 col5="Status"
                 sort5={false}
+                col5_status="true"
             />
             {solicitacoes.length > 0 ? (solicitacoes.map((solicitacao) => (
                 <TableItem
@@ -196,19 +235,6 @@ export default function Solicitacoes() {
                 />                
             ))) : <TableItemEmpty>Ops... Não encontramos nada aqui.</TableItemEmpty>
            } 
-
-            {mostrarModalDelete && solicitacaoSelecionada && (<Modal 
-                type='danger'
-                title='Excluir solicitação'
-                description={`Você solicitou excluir o seguinte condomínio: ${solicitacaoSelecionada.nome}. Essa alteração não pode ser desfeita. Você tem certeza?`}
-                onConfirm={ () => {
-                    navigate(`/condominio/editar/${solicitacaoSelecionada.id}`)
-                    setAbrirModalDelete(false)
-                }}
-                onCancel={ () => {
-                    setAbrirModalDelete(false)
-                }}
-            />)}   
 
             <TableFooter
                 totalPages={totalPages}

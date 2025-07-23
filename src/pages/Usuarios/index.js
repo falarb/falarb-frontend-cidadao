@@ -1,11 +1,11 @@
 import './styles.css';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Table from '../../components/Table';
-import TableHeader from '../../components/Table/TableHeader';
-import TableItem from '../../components/Table/TableItem';
-import TableItemEmpty from '../../components/Table/TableItemEmpty';
-import TableFooter from '../../components/Table/TableFooter';
+import Table from '../../components/TableFour';
+import TableHeader from '../../components/TableFour/TableHeader';
+import TableItem from '../../components/TableFour/TableItem';
+import TableItemEmpty from '../../components/TableFour/TableItemEmpty';
+import TableFooter from '../../components/TableFour/TableFooter';
 import Erro from '../../components/Mensagem/Erro';
 import Modal from '../../components/Modal';
 import Loading from '../../components/Loading';
@@ -28,7 +28,7 @@ export default function Usuarios() {
     const [sort_by, setSortBy] = useState('');
     const [sort_order, setSortOrder] = useState('');
     const [debouncedSearch, setDebouncedSearch] = useState(search);
-    const [user_type, setUserType] = useState('');
+    const [comunidade, setComunidade] = useState('');
 
     const navigate = useNavigate();
 
@@ -50,7 +50,7 @@ export default function Usuarios() {
             setLoading(true);
     
             try {
-                const response = await fetch (`http://127.0.0.1:8000/api/usuarios/?page=${page}&user_type=${user_type}&search=${debouncedSearch}&sort_by=${sort_by}&sort_order=${sort_order}`)
+                const response = await fetch (`http://127.0.0.1:8000/api/usuarios/?page=${page}&comunidade=${comunidade}&search=${debouncedSearch}&sort_by=${sort_by}&sort_order=${sort_order}`)
 
                 if (!response.ok) {
                     throw new Error(`Erro HTTP ${response.status}`);
@@ -58,7 +58,6 @@ export default function Usuarios() {
                 
                 const data = await response.json();
 
-                // Verifica se data.data existe, evita erro silencioso
                 if (data) {
                     setUsuarios(data.data);
                     setTotalPages(data.last_page)
@@ -75,7 +74,7 @@ export default function Usuarios() {
 
         fetchUsers();
 
-    }, [page, debouncedSearch, sort_by, sort_order, user_type]);
+    }, [page, debouncedSearch, sort_by, sort_order, comunidade]);
 
     const handleDeleteUser = async () => {
 
@@ -111,6 +110,7 @@ export default function Usuarios() {
 
             <div className="nav-tools">
                 <BtnSecundary
+                    adicionalClass='btn-svg'
                     onClick={ () => {
                         navigate('/')
                     }}
@@ -139,34 +139,11 @@ export default function Usuarios() {
                         }}
                     />
 
-                    <div className='container-info-type-user'>
-                        <div className='box box1'>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <span>Síndico Condomínio</span>
-                        </div>
-
-                        <div className='box box2'>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <span>Síndico Bloco</span>
-                        </div>
-
-                        <div className='box box3'>
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <span>Ocupante Apartamento</span>
-                        </div>
-                    </div>
-
                     <SelectCustom
-                        label='Tipo de usuário'
-                        value={user_type}
+                        label='Comunidade'
+                        value={comunidade}
                         onChange={ (event) => {
-                            setUserType(event.target.value)
+                            setComunidade(event.target.value)
                         }}
                     >   
                         <option value=''>Todos</option>
@@ -188,11 +165,15 @@ export default function Usuarios() {
                     col2="CPF"
                     sort2={false}
 
-                    col3="E-mail"
+                    col3="Comunidade"
                     sort3={false}
 
-                    col4="Observações"
-                    sort4={false}
+                    col4="Nº de Solicitações"
+                    sort4={true}
+                    onClickSort4={ () => {
+                        setSortBy('cpf')
+                        setSortOrder( sort_order === 'asc' ? 'desc' : 'asc')
+                    }}
                 />
 
                 {usuarios.length > 0 ? 
@@ -204,7 +185,7 @@ export default function Usuarios() {
                             col1={usuario.nome}
                             col2={usuario.cpf}
                             col3={usuario.email}
-                            col4={usuario.observacao}
+                            col4={usuario.cpf}
                             tipo={usuario.tipo}
                             link_view={`/usuario/${usuario.id}`}
                             onClickView={() => {
@@ -222,18 +203,18 @@ export default function Usuarios() {
                 : 
                 <>
                 <TableItemEmpty>
-                    Ops... Não encontramos nada por aqui.
+                    Ops... Não encontramos nada aqui.
                 </TableItemEmpty>
                 </>
                 }
 
                 {mostrarModalDelete && usuarioSelecionado && (<Modal 
-                    corPrimaria='#dc2626'
-                    corSecundaria='#fee2e2'
+                    type='danger'
                     title='Excluir usuário'
                     description={`Você solicitou excluir o seguinte usuário: ${usuarioSelecionado.nome}. Essa alteração não pode ser desfeita. Você tem certeza?`}
                     onConfirm={ () => {
-                        handleDeleteUser()
+                        //handleDeleteUser()
+                        alert('Delete')
                         setMostrarModalDelete(false)
                     }}
                     onCancel={ () => {

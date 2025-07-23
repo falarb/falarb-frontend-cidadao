@@ -1,5 +1,6 @@
 .container-filtros{
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
+    gap: 20px;
     align-items: center;
 }

@@ -3,6 +3,7 @@
     flex-direction: column;
     gap: 10px;
     position: relative;
+    width: max-content;
 }
 
 .select-status {
@@ -39,13 +40,23 @@
     color: #721c24;
 }
 
-.tag-ativo,
-.tag-inativo{
+.tag-ativo{
     position: absolute;
     width: 20px;
     height: 8px;
     border-radius: 10px;
     background-color: #28a745;
+    z-index: 9999;
+    top: 16px;
+    right: 30px;
+}
+
+.tag-inativo{
+    position: absolute;
+    width: 20px;
+    height: 8px;
+    border-radius: 10px;
+    background-color: #dc3545;
     z-index: 9999;
     top: 16px;
     right: 30px;

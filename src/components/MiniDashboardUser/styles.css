@@ -1,0 +1,56 @@
+.mini_dashboard_user{
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    gap: 10px;
+}
+
+.mini_dashboard_user .title{
+    color: #BDBDBD;
+    font-size: 16px;
+}
+
+
+.solicitacoes-infos{
+    display: flex;
+    gap: 20px;
+}
+
+.total{
+    font-size: 68px;
+    font-weight: 500;
+    line-height: 58px;
+}
+
+.por_status{
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.por_status div{
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+}
+
+.tag-dashboard-user{
+    width: 15px;
+    height: 7px;
+    border-radius: 10px;
+    margin: 0 6px 0 0;
+}   
+
+.tag-dashboard-user-concluidas{
+    background-color: #25D366;
+}   
+
+.tag-dashboard-user-agendadas{
+    background-color: #FF8E0C;
+}   
+
+.tag-dashboard-user-em-aberto{
+    background-color: #FF4040;
+}   

@@ -7,14 +7,15 @@ import BtnSecundary from '../../../components/Btn/BtnSecundary';
 import Modal from '../../../components/Modal'
 import TitleClipPages from '../../../components/TitleClipPages'
 import SelectStatus from '../../../components/SelectStatus';
+import MiniDashboardUser from '../../../components/MiniDashboardUser';
 
 
-export default function VisualizarSolicitacao() {
+export default function VisualizarComunidade () {
 
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [solicitacao, setSolicitacao] = useState(null); 
+    const [comunidade, setComunidade] = useState(null); 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [mostrarModalDelete, setAbrirModalDelete] = useState(false)
@@ -25,13 +26,13 @@ export default function VisualizarSolicitacao() {
             setLoading(true);
             setError(null); 
             try {
-                const response = await fetch(`http://127.0.0.1:8000/api/condominios/${id}`);
+                const response = await fetch(`http://127.0.0.1:8000/api/tipos-manutencao/${id}`);
 
                 if (!response.ok) {
                     throw new Error(`Erro HTTP ${response.status}`);
                 }
                 const data = await response.json();
-                setSolicitacao(data);
+                setComunidade(data);
             } catch (err) {
                 setError(err.message || "Erro desconhecido");
             } finally {
@@ -71,16 +72,16 @@ export default function VisualizarSolicitacao() {
     }
 
     if (error) return console.log({error});
-    if (!solicitacao) return console.log('Nenhum dado encontrado');
+    if (!comunidade) return console.log('Nenhum dado encontrado');
 
     return (
         <div>
             {loading && <Loading />}
             {error && `Erro: ${error}`}
-            {!solicitacao && `Nenhum condomínio encontrado`}
+            {!comunidade && `Nenhum condomínio encontrado`}
 
             <TitleClipPages 
-                title={`Solicitação ID: ${solicitacao.id}`}
+                title={`Comunidade ID: ${comunidade.id}`}
             />
 
             <div className="nav-tools">
@@ -105,7 +106,7 @@ export default function VisualizarSolicitacao() {
                 <BtnPrimary
                     adicionalClass='warning btn-svg'
                     onClick={ () => {
-                        navigate(`/solicitacao/editar/${solicitacao.id}`)
+                        navigate(`/comunidade/editar/${comunidade.id}`)
                     }}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"/></svg>
@@ -126,6 +127,15 @@ export default function VisualizarSolicitacao() {
                     
                 </SelectStatus>
 
+                <div className="container-mini-dashboard-user">
+                    <MiniDashboardUser
+                        total='23'
+                        concluidas='10'
+                        agendadas='6'
+                        em_aberto='7'
+                    />
+                </div>
+
                 {mostrarModalDelete && (
                     <Modal 
                         type='danger'
@@ -144,63 +154,11 @@ export default function VisualizarSolicitacao() {
                 )}  
             </div>
 
-            <div  className='box-info'>
-                <span className='font-size-p'>Solicitação</span>
-                <p className='font-size-m'>{solicitacao.endereco}</p>
-            </div>
 
             <div  className='box-info'>
-                <span className='font-size-p'>Solicitante</span>
-                <p className='font-size-m'>{solicitacao.nome}</p>
+                <span className='font-size-p'>Nome</span>
+                <p className='font-size-m'>{comunidade.nome}</p>
             </div>
-
-            <div  className='box-info'>
-                <span className='font-size-p'>CPF</span>
-                <p className='font-size-m'>{solicitacao.cnpj}</p>
-            </div>
-
-            <div  className='box-info'>
-                <span className='font-size-p'>Email</span>
-                <p className='font-size-m'>{solicitacao.email}</p>
-            </div>
-            
-            <div  className='box-info'>
-                <span className='font-size-p'>Celular</span>
-                <p className='font-size-m'>{solicitacao.telefone}</p>
-            </div>
-
-            <div  className='box-info'>
-                <span className='font-size-p'>Descrição da solicitacao</span>
-                <p className='font-size-m'>{solicitacao.endereco}</p>
-            </div>
-
-            <div  className='box-info'>
-                <span className='font-size-p'>Nota da solicitacao</span>
-                <p className='font-size-m'>{solicitacao.endereco}</p>
-            </div>
-
-            <div  className='box-info'>
-                <span className='font-size-p'>Geolocalização do local da solicitação</span>
-
-            </div>
-
-            <div className='box-geolocalizacao'>
-                <div  className='box-info'>
-                    <span className='font-size-p'>Latitude</span>
-                    <p className='font-size-m'>{solicitacao.telefone}</p>
-                </div>
-                <div  className='box-info'>
-                    <span className='font-size-p'>Longitude</span>
-                <p className='font-size-m'>{solicitacao.telefone}</p>
-            </div>
-            </div>
-
-            <BtnPrimary onClick={() => {
-                alert(`${solicitacao.telefone}`)
-            }}>
-                Ir para o Google Maps <svg xmlns="http://www.w3.org/2000/svg" className='svg-map' height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="m600-120-240-84-186 72q-20 8-37-4.5T120-170v-560q0-13 7.5-23t20.5-15l212-72 240 84 186-72q20-8 37 4.5t17 33.5v560q0 13-7.5 23T812-192l-212 72Zm-40-98v-468l-160-56v468l160 56Zm80 0 120-40v-474l-120 46v468Zm-440-10 120-46v-468l-120 40v474Zm440-458v468-468Zm-320-56v468-468Z"/></svg>
-            </BtnPrimary>
-        
         </div>
     );
 };
