@@ -1,10 +1,20 @@
 .main-container{
+   
     display: flex;
     flex-direction: column;
-    width: calc(100% - 258px);
-    margin: 0;
-    padding: 24px;
+    align-items: flex-start;
+    padding: 64px;
+    gap: 32px;
+
     position: absolute;
-    left: 210px;
-    top: 80px;
+    width: 60%;
+    left: calc(50% - 30% - 64px);
+    top: 150px;
+
+    background: #FFFFFF;
+    box-shadow: 10px 10px 32px rgba(0, 0, 0, 0.1);
+    border-radius: 40px;
+
 }
+
+

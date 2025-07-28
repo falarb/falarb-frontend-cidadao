@@ -1,0 +1,25 @@
+.container-home {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 24px;
+}
+
+.container-home h2 {
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 44px;
+    margin: 0;
+    text-align: center;
+    color: #344054;
+}
+
+.container-home p {
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 27px;
+    text-align: center;
+    margin: 0;
+    color: #344054;
+}
+

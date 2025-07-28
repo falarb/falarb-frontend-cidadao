@@ -10,6 +10,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
 }
 
 .modal .card {
@@ -26,7 +27,6 @@
   .modal .card .card-content {
     padding: 1.25rem 1rem 1rem 1rem;
     background-color: #ffffff;
-    
   }
   
     .image {
@@ -63,11 +63,14 @@
     text-align: center;
   }
   
-  .modal .card .title {
-    color: #111827;
+  .modal .card .content .title {
+    color: #313949;
     font-size: 1rem;
     font-weight: 600;
     line-height: 1.5rem;
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
   }
   
   .modal .card .message {
