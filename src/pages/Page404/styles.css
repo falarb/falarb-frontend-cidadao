@@ -6,6 +6,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: absolute;
+    top: -180px;
+    left: 0;
 
     gap: 20px;
 }
@@ -19,6 +22,17 @@
 
 .container404 h1{
     font-size: 100px;
+    color: #fff;
     margin-bottom: -30px;
-    opacity: .1;
+    opacity: .2;
+}
+
+.container404 h2,
+.container404 p{
+    color: #fff;
+}
+
+.container404 button{
+    background: #fff;
+    color: #3051FF;
 }

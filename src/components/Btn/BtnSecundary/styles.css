@@ -1,5 +1,6 @@
 .btn-secundary{
     height: 52px;
+    width: 100%;
 
     font-size: 16px;
     font-family: Inter;
@@ -15,6 +16,7 @@
     outline: none;
 
     padding: 16px 24px;
+    margin: 10px 0 0 0;
 
     background-color: #fff;
 
@@ -27,4 +29,9 @@
 
 .btn-svg{
     padding: 16px ;
+}
+
+.btn-cancel{
+    color: #FF4040;
+    border-color: #FF4040;
 }
