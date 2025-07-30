@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import BtnPrimary from '../../components/Btn/BtnPrimary';
 import BtnSecundary from '../../components/Btn/BtnSecundary';
-import InputEmail from '../../components/InputEmail';
+import InputEmail from '../../components/Input/InputEmail';
 import Modal from '../../components/Modal';
 import './styles.css';
 

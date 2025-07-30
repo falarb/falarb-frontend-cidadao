@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import BtnPrimary from '../../components/Btn/BtnPrimary';
 import BtnSecundary from '../../components/Btn/BtnSecundary';
-import InputText from '../../components/InputText';
-import InputCustomMask from '../../components/InputCustomMask';
+import InputText from '../../components/Input/InputText';
+import InputCustomMask from '../../components/Input/InputCustomMask';
 import Modal from '../../components/Modal';
 import './styles.css';
 

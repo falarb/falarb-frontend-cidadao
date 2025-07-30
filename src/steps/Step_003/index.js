@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import BtnPrimary from '../../components/Btn/BtnPrimary';
 import BtnSecundary from '../../components/Btn/BtnSecundary';
-import InputCode from '../../components/InputCode';
+import InputCode from '../../components/Input/InputCode';
 import Modal from '../../components/Modal';
 import './styles.css';
 
