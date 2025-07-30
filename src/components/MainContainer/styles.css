@@ -1,5 +1,4 @@
 .main-container{
-   
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -9,12 +8,35 @@
     position: absolute;
     width: 40%;
     left: calc(50% - 20% - 64px);
-    top: 150px;
+    top: 180px;
 
     background: #FFFFFF;
     box-shadow: 10px 10px 32px rgba(0, 0, 0, 0.1);
     border-radius: 40px;
-
 }
 
+.header-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 64px;
+    gap: 32px;
+    position: absolute;
+    width: 40%;
+    left: calc(50% - 20% - 64px);
+    top: 50px;
+
+    background: #FFFFFF;
+    box-shadow: 10px 10px 32px rgba(0, 0, 0, 0.1);
+    border-radius: 40px;
+}
+
+.header-container .header-logo img{
+    width: 200px;
+}
+
+.header-container .header-options{
+    display: flex;
+    gap: 10px;
+}
 

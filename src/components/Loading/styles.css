@@ -1,22 +1,22 @@
 #container-loader{
+    width: 100%;
+    height: 100%;
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    top: 0px;
+    left: 0px;
     border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
     backdrop-filter: blur(2px); 
     background-color: rgba(255, 255, 255, 0.05);
-
     z-index: 99999;
 } 
 
 #wifi-loader {
   --background: #62abff;
   --front-color: #3051FF;
-  --back-color: #c3c8de;
+  --back-color: #fff;
   --text-color: #414856;
   width: 24px;
   height: 24px;

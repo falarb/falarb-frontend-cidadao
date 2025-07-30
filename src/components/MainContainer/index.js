@@ -1,5 +1,32 @@
 import './styles.css';
+import BtnSecundary from '../Btn/BtnSecundary';
+import BtnPrimary from '../Btn/BtnPrimary';
 
 export default function MainContainer ( { children, menuIsOpen } ) {
-    return <div className="main-container">{children}</div>
+    return <>
+        <div className="header-container">
+            <div className="header-logo">
+                <img src="/imagens/logo.png" alt="Logo" />
+            </div>
+            <div className={`header-options`}>
+                <BtnSecundary
+                    adicionalClass='btn-svg'
+                    onClick={() => {
+                        alert('contato');
+                    }}
+                >
+                    Saiba mais
+                </BtnSecundary>
+                <BtnPrimary
+                    adicionalClass='btn-svg'
+                    onClick={() => {
+                        window.location.reload();
+                    }}
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg>
+                </BtnPrimary>
+            </div>
+        </div>
+        <div className="main-container">{children}</div>
+    </>
 }

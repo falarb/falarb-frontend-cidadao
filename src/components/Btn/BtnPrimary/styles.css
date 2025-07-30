@@ -27,7 +27,8 @@
 }
 
 .btn-svg{
-    padding: 16px ;
+    padding: 16px;
+    width: max-content;
 }
 
 .warning {
@@ -44,4 +45,10 @@
 
 .list{
     background-color: #F30CFF;
+}
+
+.btn-tutorial{
+    max-height: 30px;
+    max-width: max-content;
+    border-radius: 10px;
 }

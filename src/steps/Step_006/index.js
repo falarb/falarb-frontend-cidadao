@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import BtnPrimary from '../../components/Btn/BtnPrimary';
 import BtnSecundary from '../../components/Btn/BtnSecundary';
-import InputEmail from '../../components/InputEmail';
+import InputText from '../../components/InputText';
+import InputCustomMask from '../../components/InputCustomMask';
 import Modal from '../../components/Modal';
 import './styles.css';
 
-export default function Step002( { solicitacao, setSolicitacao, onNext, onBack } ) {
+export default function Step006( { solicitacao, setSolicitacao, onNext, onBack } ) {
 
     const [modalAberto, setModalAberto] = useState(false);
-    const [validate, setValidate] = useState(false);
 
     const handleChange = (event) => {
         setSolicitacao(prev => ({
@@ -18,28 +18,45 @@ export default function Step002( { solicitacao, setSolicitacao, onNext, onBack }
     }
 
     return (
-        <div className='container-step-2'>
+        <div className='container-step-4'>
+            <h1>Quase lá...</h1>
 
-            <h2>Bem vindo ao <span className='accent-color'>Fala Rebouças</span></h2>
+            <h2>Insira seus dados para poder registrar solicitações.</h2>
 
-            <h1>Vamos lá?</h1>
+            <small>Essa etapa só será solicitada uma única vez, nas próximas visitas você será direcionado diretamente ao cadastro de solicitação.</small>
 
-            <InputEmail
-                label='Digite seu e-mail'
-                name='email'
-                placeholder='exemplo@email.com'
-                value={solicitacao.email}
+            <InputText
+                label='Qual seu nome completo?'
+                name='nome_cidadao'
+                value={solicitacao.nome_cidadao}
                 onChange={handleChange}
-                validate={validate}
-                setValidade={setValidate}
+                placeholder='Digite seu nome completo'
+            />
+
+            <InputCustomMask
+                label='Qual seu CPF?'
+                name='cpf_cidadao'
+                value={solicitacao.cpf_cidadao}
+                onChange={handleChange}
+                placeholder='999.999.999-99'
+                mask='999.999.999-99'
+            />
+
+            <InputCustomMask
+                label='Qual o número do seu celular?'
+                name='celular_cidadao'
+                value={solicitacao.celular_cidadao}
+                onChange={handleChange}
+                placeholder='(12) 3 4567-8910'
+                mask='(99) 9 9999-9999'
             />
 
             <BtnPrimary
                 onClick={ () => {
-                    if (solicitacao.email && validate === false) {
+                    if (solicitacao.comunidade && solicitacao.tipoSolicitacao) {
                         onNext();
                     } else {
-                        alert('Por favor, insira um e-mail válido.');
+                        alert('Por favor, selecione corretamente os campos.');
                     }
                 }}
             >
@@ -47,6 +64,7 @@ export default function Step002( { solicitacao, setSolicitacao, onNext, onBack }
             </BtnPrimary>
 
             <BtnSecundary
+                adicionalClass='btn-back'
                 onClick={onBack}
             >
                 Voltar uma etapa

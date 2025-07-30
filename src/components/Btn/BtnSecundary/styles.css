@@ -16,7 +16,6 @@
     outline: none;
 
     padding: 16px 24px;
-    margin: 10px 0 0 0;
 
     background-color: #fff;
 
@@ -28,7 +27,8 @@
 }
 
 .btn-svg{
-    padding: 16px ;
+    padding: 16px;
+    width: max-content;
 }
 
 .btn-cancel{

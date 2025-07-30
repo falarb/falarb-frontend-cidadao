@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Template from './pages/Template';
 import Home from './pages/Home';
+import Progress from './pages/Progress';
 import Page404 from './pages/Page404';
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
       {/* Rotas com Template */}
       <Route path="/" element={<Template />}>
         <Route index element={<Home />} />
-        <Route path="" element={<Home />} />
+        <Route path="acompanhar-solicitacao" element={<Progress />} />
       </Route>
 
       {/* 404 fora do Template */}
