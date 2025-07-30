@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import BtnPrimary from '../../components/Btn/BtnPrimary';
 import BtnSecundary from '../../components/Btn/BtnSecundary';
-import InputCustomMask from '../../components/InputCustomMask';
+import InputCode from '../../components/InputCode';
 import Modal from '../../components/Modal';
 import './styles.css';
 
@@ -30,7 +30,7 @@ export default function Step003( { solicitacao, setSolicitacao, onNext, onBack} 
 
             <h2>Insira abaixo o código que enviamos para o seu endereço de email - <span className='accent-color'>{solicitacao.email}</span></h2>
 
-            <InputCustomMask
+            <InputCode
                 name='codigo_uninco'
                 placeholder='1234'
                 mask='9999'

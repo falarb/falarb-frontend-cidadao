@@ -1,16 +1,27 @@
 import './styles.css'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function InputEmail({ label, name, value, onChange, placeholder, setValidade}) {
+
+    const [touched, setTouched] = useState(false);
 
     const isEmailValid = (value) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(value);
     };
-    useEffect(() => {
-        setValidade(!isEmailValid(value));
-    }, [value, setValidade]); // dispara toda vez que value muda
 
+    useEffect(() => {
+        if (touched) {
+            setValidade(!isEmailValid(value));
+        }
+    }, [value, touched, setValidade]);
+
+    const handleChange = (e) => {
+        if (!touched) setTouched(true);
+        onChange(e);
+    };
+
+    const showError = touched && !isEmailValid(value);
 
     return (
         <div className='container-input-email'>
@@ -20,12 +31,10 @@ export default function InputEmail({ label, name, value, onChange, placeholder, 
                 placeholder={placeholder}
                 name={name}
                 value={value}
-                onChange={onChange}
-                style={{ borderColor: isEmailValid(value) ? "" : "#ffc4c4" }}
+                onChange={handleChange}
+                style={{ borderColor: showError ? "#ffc4c4" : "" }}
             />
-            { !isEmailValid(value) && <p className='invalid-text' style={{ color: "red" }}>Insira um e-mail inválido</p> }
+            { showError && <p className='invalid-text' style={{ color: "red" }}>Insira um e-mail válido</p> }
         </div>
-
     )
-
 }

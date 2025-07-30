@@ -3,13 +3,9 @@
     width: 100%;
 
     font-size: 16px;
-    font-family: Inter;
     color: #fff;
  
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center; 
+    text-align: center;
 
     border: none;
     border-radius: 20px;
@@ -28,7 +24,7 @@
 
 .btn-svg{
     padding: 16px;
-    width: max-content;
+    max-width: max-content !important;
 }
 
 .warning {

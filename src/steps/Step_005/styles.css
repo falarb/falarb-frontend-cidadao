@@ -26,6 +26,7 @@
     border-radius: 20px;
     display: flex;
     flex-direction: column;
+    text-align: left;
     gap: 20px;
 }
 

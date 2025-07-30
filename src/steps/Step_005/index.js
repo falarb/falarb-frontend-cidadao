@@ -64,8 +64,7 @@ export default function Step005( { solicitacao, setSolicitacao, onNext, onBack }
         <div className='container-step-5'>
         <h2>Agora precisamos que nos informe sobre o <span className='accent-color'>local exato</span> da solicitação.</h2>
 
-        <p className='opacity'>Explicando:</p>
-        <p>Por exemplo, se você solicitou o reparo de uma estrada de chão, você deve inserir a localização do local desse reparo.</p>
+        <p className='opacity'>Por exemplo, se você solicitou o reparo de uma estrada de chão, você deve inserir a localização do local desse reparo.</p>
 
         <div className='container-info-box'>
             <div className='title-info-box'>
