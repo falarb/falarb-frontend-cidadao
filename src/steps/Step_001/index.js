@@ -5,7 +5,7 @@ export default function Step001( { onNext, onClickReviewRequest} ) {
 
     return (
         <div className='container-step-1'>
-            <h2>Bem vindo ao <span className='accent-color'>Fala Rebouças</span></h2>
+            <h2>Bem vindo ao <span className='accent-color'>SolicitaAi</span></h2>
             <p>Clique abaixo para realizar a sua solicitação</p>
             <BtnPrimary
                 adicionalClass='success'

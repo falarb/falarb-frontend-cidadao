@@ -20,7 +20,7 @@ export default function Step002( { solicitacao, setSolicitacao, onNext, onBack }
     return (
         <div className='container-step-2'>
 
-            <h2>Bem vindo ao <span className='accent-color'>Fala Rebouças</span></h2>
+            <h2>Bem vindo ao <span className='accent-color'>SolicitaAi</span></h2>
 
             <h1>Vamos lá?</h1>
 

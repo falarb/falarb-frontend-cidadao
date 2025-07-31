@@ -1,6 +1,7 @@
 import './styles.css';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import BtnPrimary from '../../components/Btn/BtnPrimary';
+import BtnSecundary from '../../components/Btn/BtnSecundary';
 import html2canvas from 'html2canvas';
 
 export default function Progress( { solicitacao } ) {
@@ -11,7 +12,6 @@ export default function Progress( { solicitacao } ) {
         const element = document.getElementById('container-progress');
         const canvas = await html2canvas(element);
         const dataUrl = canvas.toDataURL('image/png');
-    
         const link = document.createElement('a');
         link.href = dataUrl;
         link.download = 'comprovante.png';
@@ -24,7 +24,7 @@ export default function Progress( { solicitacao } ) {
 
                     <p>Andamento da solicitação</p>
 
-                    <h1>ay703</h1>
+                    <h1>ab123</h1>
 
                     <span className='status'>
                         Em análise
@@ -90,7 +90,15 @@ export default function Progress( { solicitacao } ) {
                         onClick={handleSaveAsImage}
                     >
                         Salvar comprovante
-                    </BtnPrimary>
+                </BtnPrimary>
+
+                <BtnPrimary 
+                        onClick={() => {
+                            window.location.reload();
+                        }}
+                    >
+                        Voltar ao início
+                </BtnPrimary>
             
         </>
     )
