@@ -1,36 +1,25 @@
-.container-input-email{
+.custom-input-mask{
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin: 15px 0;
     width: 100%;
-    text-align: left;
+    text-align: left; 
 }
 
-.container-input-email input {
+.input-mask{
     height: 52px;
-    
+
     font-size: 16px;
     font-family: Inter;
     color: #344054;
  
     display: flex;
-    text-align: left; 
 
     border: 2px solid #D9D9D9;
     border-radius: 20px;
     outline: none;
 
-    padding: 0 24px 0 24px;
+    padding: 0 24px;
 
     cursor: pointer;
-}
-
-.container-input-email .invalid{
-    border-color: #FF0000 !important;
-}
-
-.invalid-text{
-    margin: 0;
-    font-size: 13px;
 }

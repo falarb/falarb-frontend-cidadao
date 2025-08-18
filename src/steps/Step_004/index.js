@@ -1,100 +1,165 @@
-import { useState } from 'react';
-import BtnPrimary from '../../components/Btn/BtnPrimary';
-import BtnSecundary from '../../components/Btn/BtnSecundary';
-import SelectCustom from '../../components/SelectCustom';
-import TextArea from '../../components/TextArea';
-import Modal from '../../components/Modal';
-import './styles.css';
+import { useState } from "react";
+import BtnPrimary from "../../components/Btn/BtnPrimary";
+import BtnSecundary from "../../components/Btn/BtnSecundary";
+import SelectCustom from "../../components/SelectCustom";
+import TextArea from "../../components/TextArea";
+import Modal from "../../components/Modal";
+import "./styles.css";
 
-export default function Step004( { solicitacao, setSolicitacao, onNext, onBack } ) {
+export default function Step004({ solicitacao, setSolicitacao, cidadao, setStep}) {
+  const [modalCancelAberto, setModalCancelAberto] = useState(false);
+  const [modalErroAberto, setModalErroAberto] = useState(false);
+  const [categorias, setCategorias] = useState([]);
+  const [comunidades, setComunidades] = useState([]);
 
-    const [modalAberto, setModalAberto] = useState(false);
+  const handleChange = (event) => {
+    setSolicitacao((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
+    console.log(solicitacao);
+  };
 
-    const handleChange = (event) => {
-        setSolicitacao(prev => ({
-            ...prev,
-            [event.target.name]: event.target.value
-        }));
+  useState(async () => {
+    setSolicitacao((prev) => ({
+      ...prev,
+      id_cidadao: cidadao.id,
+    }));
+
+    try {
+      const listarCategorias = await fetch(
+        "http://127.0.0.1:8000/api/categorias"
+      );
+
+      if (!listarCategorias.ok) {
+        const errorData = await listarCategorias.json().catch(() => null);
+        console.error("Erro ao listar categorias - Detalhes:", errorData);
+        throw new Error("Erro ao listar categorias");
+      }
+
+      const data = await listarCategorias.json();
+      setCategorias(data);
+    } catch (error) {
+      throw new Error("Erro ao listar categorias");
     }
 
-    return (
-        <div className='container-step-4'>
+    try {
+      const listarComunidades = await fetch(
+        "http://127.0.0.1:8000/api/comunidades"
+      );
 
-            <h2>Bem vindo ao <span className='accent-color'>SolicitaAi</span></h2>
+      if (!listarComunidades.ok) {
+        const errorData = await listarComunidades.json().catch(() => null);
+        console.error("Erro ao listar categorias - Detalhes:", errorData);
+        throw new Error("Erro ao listar categorias");
+      }
 
-            <h1>Vamos lá?</h1>
+      const data = await listarComunidades.json();
+      setComunidades(data);
+    } catch (error) {
+      throw new Error("Erro ao listar categorias");
+    }
+  }, []);
 
-            <h2>Tudo certo e verificado, você já pode começar sua solicitação.</h2>
+  return (
+    <div className="container-step-4">
+      <h2>
+        Bem vindo ao <span className="accent-color">SolicitaAi</span>
+      </h2>
 
-            <small>É extremamente importante que você siga todos os passos, inserir todos os campos abaixo solicitados e ao final clicar em “Enviar solicitação”</small>
+      <h1>Vamos lá?</h1>
 
-            <SelectCustom
-                label='Selecione qual a sua comunidade'
-                name='comunidade'
-                value={solicitacao.comunidade}
-                onChange={handleChange}
-            >
-                <option value='comunidade_001'>Comunidade 001</option>
-            </SelectCustom>
+      <h2>Tudo certo e verificado, você já pode começar sua solicitação.</h2>
 
-            <SelectCustom
-                label='Selecione o tipo de solicitação'
-                name='tipoSolicitacao'
-                value={solicitacao.tipoSolicitacao}
-                onChange={handleChange}
-            >
-                <option value='tipo_solicitacao_001'>Tipo solicitacao 001</option>
-            </SelectCustom>
+      <small>
+        É extremamente importante que você siga todos os passos, inserir todos
+        os campos abaixo solicitados e ao final clicar em “Enviar solicitação”
+      </small>
 
-            <TextArea
-                label='Descreva sua solicitação'
-                name='descricao'
-                placeholder='Descreva sua solicitação aqui...'
-                value={solicitacao.descricao}
-                onChange={handleChange}
-            />
+      <SelectCustom
+        label="Selecione qual a sua comunidade"
+        name="id_comunidade"
+        value={solicitacao.id_comunidade}
+        onChange={handleChange}
+      >
+        {comunidades?.map((comunidade) => (
+          <option key={comunidade.id} value={comunidade.id}>
+            {comunidade.nome}
+          </option>
+        ))}
+      </SelectCustom>
 
-            <BtnPrimary
-                onClick={ () => {
-                    if (solicitacao.comunidade && solicitacao.tipoSolicitacao) {
-                        onNext();
-                    } else {
-                        alert('Por favor, selecione corretamente os campos.');
-                    }
-                }}
-            >
-                Próximo passo
-            </BtnPrimary>
+      <SelectCustom
+        label="Selecione o tipo de solicitação"
+        name="id_categoria"
+        value={solicitacao.id_categoria}
+        onChange={handleChange}
+      >
+        {categorias?.map((categoria) => (
+          <option key={categoria.id} value={categoria.id}>
+            {categoria.nome}
+          </option>
+        ))}
+      </SelectCustom>
 
-            <BtnSecundary
-                adicionalClass='btn-back'
-                onClick={onBack}
-            >
-                Voltar uma etapa
-            </BtnSecundary>
+      <TextArea
+        label="Descreva sua solicitação"
+        name="descricao"
+        placeholder="Descreva sua solicitação aqui..."
+        value={solicitacao.descricao}
+        onChange={handleChange}
+      />
 
-            <BtnSecundary
-                adicionalClass='btn-cancel '
-                onClick={ () => { 
-                    setModalAberto(true);
-                }}
-            >
-                Cancelar solicitacao
-            </BtnSecundary>
+      <BtnPrimary
+        onClick={() => {
+          if (
+            solicitacao.id_comunidade !== "" &&
+            solicitacao.id_categoria !== "" &&
+            solicitacao.id_cidadao !== ""
+          ) {
+            setStep(5);
+          } else {
+            setModalErroAberto(true);
+          }
+        }}
+      >
+        Próximo passo
+      </BtnPrimary>
 
-            {modalAberto && 
-                <Modal
-                    type="warning"
-                    title="Cancelar solicitação"
-                    description="Tem certeza que deseja cancelar a solicitação? Os dados não serão salvos."
-                    onCancel={() => setModalAberto(false)}
-                    onConfirm={() => {
-                        window.location.reload();
-                    }}
-                >
-                </Modal>
-            }
+      <BtnSecundary adicionalClass="btn-back" onClick={null}>
+        Voltar uma etapa
+      </BtnSecundary>
+
+      <BtnSecundary
+        adicionalClass="btn-cancel "
+        onClick={() => {
+          setModalCancelAberto(true);
+        }}
+      >
+        Cancelar solicitacao
+      </BtnSecundary>
+
+      {modalErroAberto && (
+        <Modal
+          type="danger"
+          title="Preencha todos os campos"
+          description="Por favor, preencha todos os campos obrigatórios antes de prosseguir."
+          onCancel={() => setModalErroAberto(false)}
+          onConfirm={() => setModalErroAberto(false)}
+        ></Modal>
+      )}
+
+      {modalCancelAberto && (
+        <Modal
+          type="warning"
+          title="Cancelar solicitação"
+          description="Tem certeza que deseja cancelar a solicitação? Os dados não serão salvos."
+          onCancel={() => setModalCancelAberto(false)}
+          onConfirm={() => {
+            window.location.reload();
+          }}
+        ></Modal>
+      )}
     </div>
-    )
-
+  );
 }

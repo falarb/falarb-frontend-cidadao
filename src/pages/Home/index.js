@@ -16,10 +16,22 @@ export default function Home({ nameInput, valueInput }) {
   const navigate = useNavigate();
 
   const [solicitacao, setSolicitacao] = useState({
+    id: "",
+    status: "",
+    latitude: "",
+    longitude: "",
+    id_cidadao: "",
+    id_categoria: "",
+    id_comunidade: ""
+  });
+
+  const [cidadao, setCidadao] = useState({
+    id: "",
+    nome: "",
     email: "",
-    codigoUnico: "",
-    comunidade: "",
-    tipoSolicitacao: "",
+    celular: "",
+    cpf: "",
+    ultimo_codigo: "",
   });
 
   useEffect(() => {
@@ -31,26 +43,13 @@ export default function Home({ nameInput, valueInput }) {
     }
   }, [nameInput, valueInput]);
 
-  const nextStep = () => {
-    setLoading(true);
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      setStep((prev) => prev + 1);
-      setLoading(false);
-    }, 2000);
-  };
-  
-  const prevStep = () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      setStep((prev) => prev - 1);
-  };
-
   const steps = {
     1: (
       <>
         {loading && <Loading />}
         <Step001
-          onNext={nextStep}
+          step={step}
+          setStep={setStep}
           onClickReviewRequest={() => navigate("/acompanhar-solicitacao")}
         />
       </>
@@ -61,8 +60,10 @@ export default function Home({ nameInput, valueInput }) {
         <Step002
           solicitacao={solicitacao}
           setSolicitacao={setSolicitacao}
-          onNext={nextStep}
-          onBack={prevStep}
+          cidadao={cidadao}
+          setCidadao={setCidadao}
+          step={step}
+          setStep={setStep}
         />
       </>
     ),
@@ -72,8 +73,10 @@ export default function Home({ nameInput, valueInput }) {
         <Step003
           solicitacao={solicitacao}
           setSolicitacao={setSolicitacao}
-          onNext={nextStep}
-          onBack={prevStep}
+          cidadao={cidadao}
+          setCidadao={setCidadao}
+          step={step}
+          setStep={setStep}
         />
       </>
     ),
@@ -83,8 +86,10 @@ export default function Home({ nameInput, valueInput }) {
         <Step004
           solicitacao={solicitacao}
           setSolicitacao={setSolicitacao}
-          onNext={nextStep}
-          onBack={prevStep}
+          cidadao={cidadao}
+          setCidadao={setCidadao}
+          step={step}
+          setStep={setStep}
         />
       </>
     ),
@@ -94,8 +99,10 @@ export default function Home({ nameInput, valueInput }) {
         <Step005
           solicitacao={solicitacao}
           setSolicitacao={setSolicitacao}
-          onNext={nextStep}
-          onBack={prevStep}
+          cidadao={cidadao}
+          setCidadao={setCidadao}
+          step={step}
+          setStep={setStep}
         />
       </>
     ),
@@ -105,8 +112,10 @@ export default function Home({ nameInput, valueInput }) {
         <Step006
           solicitacao={solicitacao}
           setSolicitacao={setSolicitacao}
-          onNext={nextStep}
-          onBack={prevStep}
+          cidadao={cidadao}
+          setCidadao={setCidadao}
+          step={step}
+          setStep={setStep}
         />
       </>
     ),

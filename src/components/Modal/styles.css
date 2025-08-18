@@ -1,129 +1,139 @@
-.modal{
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #ffffffad;
-    width: 100%;
-    height: 100%;
-    z-index: 999999;
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #ffffffad;
+  width: 100%;
+  height: 100%;
+  z-index: 999999;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .modal .card {
-    width: 350px;
-    max-width: 350px;
-    background-color: #ffffff;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow:
-      0 20px 25px -5px rgba(0, 0, 0, 0.1),
-      0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  }
-  
-  .modal .card .card-content {
-    padding: 1.25rem 1rem 1rem 1rem;
-    background-color: #ffffff;
-  }
-  
-    .image {
-    display: flex;
-    margin-left: auto;
-    margin-right: auto;
-    flex-shrink: 0;
-    justify-content: center;
-    align-items: center;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 9999px;
+  width: 350px;
+  max-width: 350px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
 
-  }
+.modal .card .card-content {
+  padding: 1.25rem 1rem 1rem 1rem;
+  background-color: #ffffff;
+}
 
-  .danger-image{
-    background-color: #fee2e2;
-  }
+.image {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+}
 
-  .danger-image svg{
-    fill: #FF4040 !important
-  } 
+.danger-image {
+  background-color: #fee2e2;
+}
 
-  .warning-image{
-    background-color: #ffe6cf;
-  }
+.warning-image {
+  background-color: #ffe6cf;
+}
 
-  .warning-image svg{
-    fill: #ff7a00 !important
-  } 
-  
-  .modal .card .content {
-    margin-top: 0.75rem;
-    text-align: center;
-  }
-  
-  .modal .card .content .title {
-    color: #313949;
-    font-size: 1rem;
-    font-weight: 600;
-    line-height: 1.5rem;
-    text-align: center;
-    width: 100%;
-    margin: 0 auto;
-  }
-  
-  .modal .card .message {
-    color: #6b7280;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-  }
-  
-  .modal .card .actions {
-    margin: 0 1rem;
-  }
-  
-  .modal .card .button-danger{
-    background-color: #FF4040;
-  }
+.normal-image {
+  background-color: #cfe9ff;
+}
 
-  .modal .card .button-warning{
-    background-color: #ff7a00;
-  }
+.danger-image svg {
+  fill: #ff4040 !important;
+}
 
-  .modal .card .desactivate {
-    display: inline-flex;
-    padding: 0.5rem 1rem;
-    color: #ffffff;
-    font-size: 1rem;
-    line-height: 1.5rem;
-    font-weight: 500;
-    justify-content: center;
-    width: 100%;
-    border-radius: 15px;
-    border: none;
-  }
-  
-  .modal .card .cancel {
-    display: inline-flex;
-    margin-top: 0.75rem;
-    padding: 0.5rem 1rem;
-    background-color: #ffffff;
-    color: #374151;
-    font-size: 1rem;
-    line-height: 1.5rem;
-    font-weight: 500;
-    justify-content: center;
-    width: 100%;
-    border-radius: 15px;
-    border: 2px solid #d1d5db;
-  }
-  
-  .modal .card button {
-    cursor: pointer;
-  }
-  
-  .modal .card button:hover {
-    opacity: .6;
-  }
-  
+.warning-image svg {
+  fill: #ff7a00 !important;
+}
+
+.normal-image svg {
+  fill: #3051ff !important;
+}
+
+.modal .card .content {
+  margin-top: 0.75rem;
+  text-align: center;
+}
+
+.modal .card .content .title {
+  color: #313949;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5rem;
+  text-align: center;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.modal .card .message {
+  color: #6b7280;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  margin: 1rem 0 0 0;
+}
+
+.modal .card .actions {
+  margin: 1rem 1rem 0 1rem;
+}
+
+.modal .card .button-danger {
+  background-color: #ff4040;
+}
+
+.modal .card .button-warning {
+  background-color: #ff7a00;
+}
+
+.modal .card .button-normal {
+  background-color: #3051ff;
+}
+
+.modal .card .desactivate {
+  display: inline-flex;
+  padding: 0.5rem 1rem;
+  color: #ffffff;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  justify-content: center;
+  width: 100%;
+  border-radius: 15px;
+  border: none;
+}
+
+.modal .card .cancel {
+  display: inline-flex;
+  margin-top: 0.75rem;
+  padding: 0.5rem 1rem;
+  background-color: #ffffff;
+  color: #374151;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  justify-content: center;
+  width: 100%;
+  border-radius: 15px;
+  border: 2px solid #d1d5db;
+}
+
+.modal .card button {
+  cursor: pointer;
+}
+
+.modal .card button:hover {
+  opacity: 0.6;
+}

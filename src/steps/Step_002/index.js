@@ -1,79 +1,147 @@
-import { useState } from 'react';
-import BtnPrimary from '../../components/Btn/BtnPrimary';
-import BtnSecundary from '../../components/Btn/BtnSecundary';
-import InputEmail from '../../components/Input/InputEmail';
-import Modal from '../../components/Modal';
-import './styles.css';
+import { useState, useEffect } from "react";
+import BtnPrimary from "../../components/Btn/BtnPrimary";
+import BtnSecundary from "../../components/Btn/BtnSecundary";
+import InputEmail from "../../components/Input/InputEmail";
+import Modal from "../../components/Modal";
+import "./styles.css";
 
-export default function Step002( { solicitacao, setSolicitacao, onNext, onBack } ) {
+export default function Step002({
+  solicitacao,
+  setSolicitacao,
+  setCidadao,
+  cidadao,
+  step,
+  setStep,
+}) {
+  const [modalCancelAberto, setModalCancelAberto] = useState(false);
+  const [modalErroAberto, setModalErroAberto] = useState(false);
+  const [isValid, setIsValid] = useState(false);
+  const [email, setEmail] = useState();
 
-    const [modalAberto, setModalAberto] = useState(false);
-    const [validate, setValidate] = useState(false);
+  const handleChange = (event) => {
+    setCidadao((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
+    setEmail(event.target.value);
+  };
 
-    const handleChange = (event) => {
-        setSolicitacao(prev => ({
-            ...prev,
-            [event.target.name]: event.target.value
+  const handleSubmitEmail = async () => {
+    try {
+      console.log("Email recebido:", email);
+
+      // Verifica se o email já existe
+      const emailResponse = await fetch(
+        `http://127.0.0.1:8000/api/cidadaos/email-existe?email=${email}`,
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (!emailResponse.ok) {
+        throw new Error("Erro ao verificar email");
+      }
+
+      const data = await emailResponse.json();
+      console.log("Resposta do servidor:", data);
+
+      if (!data.id) {
+        console.log("Email não cadastrado, criando novo cidadão");
+        setCidadao((prev) => ({
+          ...prev,
+          email: email,
         }));
+        setStep(4);
+      } else {
+        console.log("Email já cadastrado, buscando cidadão existente");
+        setCidadao((prev) => ({
+          ...prev,
+          id_cidadao: data.id,
+        }));
+
+        setSolicitacao((prev) => ({
+          ...prev,
+          id: data.id,
+        }));
+      }
+    } catch (error) {
+      console.error("Erro ao enviar email:", error);
     }
+  };
 
-    return (
-        <div className='container-step-2'>
+  useEffect(() => {
+    console.log("Cidadao atualizado:", cidadao);
+  }, [cidadao]);
 
-            <h2>Bem vindo ao <span className='accent-color'>SolicitaAi</span></h2>
+  return (
+    <div className="container-step-2">
+      <h2>
+        Bem vindo ao <span className="accent-color">SolicitaAi</span>
+      </h2>
 
-            <h1>Vamos lá?</h1>
+      <h1>Vamos lá?</h1>
 
-            <InputEmail
-                label='Digite seu e-mail'
-                name='email'
-                placeholder='exemplo@email.com'
-                value={solicitacao.email}
-                onChange={handleChange}
-                validate={validate}
-                setValidade={setValidate}
-            />
+      <form
+        onSubmit={async (event) => {
+          event.preventDefault();
+          await handleSubmitEmail(event);
+          if (isValid) {
+            setStep(6);
+          } else {
+            setModalErroAberto(true);
+          }
+        }}
+      >
+        <InputEmail
+          label="Digite seu e-mail"
+          name="email"
+          placeholder="exemplo@email.com"
+          value={cidadao.email}
+          onChange={(event) => {
+            handleChange(event);
+          }}
+          validate={setIsValid}
+        />
 
-            <BtnPrimary
-                onClick={ () => {
-                    if (solicitacao.email && validate === false) {
-                        onNext();
-                    } else {
-                        alert('Por favor, insira um e-mail válido.');
-                    }
-                }}
-            >
-                Próximo passo
-            </BtnPrimary>
+        {console.log("Estado de validade do email:", isValid)}
 
-            <BtnSecundary
-                onClick={onBack}
-            >
-                Voltar uma etapa
-            </BtnSecundary>
+        <BtnPrimary type="submit">Próximo passo</BtnPrimary>
+      </form>
 
-            <BtnSecundary
-                adicionalClass='btn-cancel '
-                onClick={ () => { 
-                    setModalAberto(true);
-                }}
-            >
-                Cancelar solicitacao
-            </BtnSecundary>
+      <BtnSecundary onClick={ () => {
+        setStep(1);
+      }}>Voltar uma etapa</BtnSecundary>
 
-            {modalAberto && 
-                <Modal
-                    type="warning"
-                    title="Cancelar solicitação"
-                    description="Tem certeza que deseja cancelar a solicitação? Os dados não serão salvos."
-                    onCancel={() => setModalAberto(false)}
-                    onConfirm={() => {
-                        window.location.reload();
-                    }}
-                >
-                </Modal>
-            }
+      <BtnSecundary
+        adicionalClassName="btn-cancel "
+        onClick={() => {
+          setModalCancelAberto(true);
+        }}
+      >
+        Cancelar solicitacao
+      </BtnSecundary>
+
+      {modalErroAberto && (
+        <Modal
+          type="danger"
+          title="Verifique o email digitado"
+          description="O email digitado é inválido, por favor, verifique e tente novamente."
+          onCancel={() => setModalErroAberto(false)}
+          onConfirm={() => setModalErroAberto(false)}
+        ></Modal>
+      )}
+
+      {modalCancelAberto && (
+        <Modal
+          type="warning"
+          title="Cancelar solicitação"
+          description="Tem certeza que deseja cancelar a solicitação? Os dados não serão salvos."
+          onCancel={() => setModalCancelAberto(false)}
+          onConfirm={() => {
+            window.location.reload();
+          }}
+        ></Modal>
+      )}
     </div>
-    )
-
+  );
 }

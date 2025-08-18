@@ -22,3 +22,9 @@
     margin: 0;
     opacity: .6;
 }
+
+.container-step-4 form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}

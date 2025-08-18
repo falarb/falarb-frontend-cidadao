@@ -1,40 +1,47 @@
-import './styles.css'
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from "react";
+import "./styles.css";
 
-export default function InputEmail({ label, name, value, onChange, placeholder, setValidade}) {
+export default function InputEmail({
+  label,
+  name,
+  value,
+  onChange,
+  placeholder,
+  validate,
+}) {
+  const [changed, setChanged] = useState(false);
+  const isEmailValid = (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+  const isValid = isEmailValid(value);
 
-    const [touched, setTouched] = useState(false);
+  useEffect(() => {
+    if (value !== "") {
+      setChanged(true);
+    }
+  }, [value]);
 
-    const isEmailValid = (value) => {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(value);
-    };
+  useEffect(() => {
+    if (validate) {
+      validate(isValid); // Passa o estado de validade pro pai
+    }
+  }, [isValid]);
 
-    useEffect(() => {
-        if (touched) {
-            setValidade(!isEmailValid(value));
-        }
-    }, [value, touched, setValidade]);
-
-    const handleChange = (e) => {
-        if (!touched) setTouched(true);
-        onChange(e);
-    };
-
-    const showError = touched && !isEmailValid(value);
-
-    return (
-        <div className='container-input-email'>
-            <label>{label}</label>
-            <input
-                type="email"
-                placeholder={placeholder}
-                name={name}
-                value={value}
-                onChange={handleChange}
-                style={{ borderColor: showError ? "#ffc4c4" : "" }}
-            />
-            { showError && <p className='invalid-text' style={{ color: "red" }}>Insira um e-mail válido</p> }
-        </div>
-    )
+  return (
+    <div className="container-input-email">
+      <label>{label}</label>
+      <input
+        type="email"
+        placeholder={placeholder}
+        name={name}
+        value={value}
+        onChange={onChange}
+        className={!isValid && changed ? "invalid" : ""}
+        validate={isValid}
+      />
+      {!isValid && changed && (
+        <p className="invalid-text" style={{ color: "red" }}>
+          E-mail inválido
+        </p>
+      )}
+    </div>
+  );
 }

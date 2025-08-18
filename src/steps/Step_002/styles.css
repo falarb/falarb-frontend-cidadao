@@ -18,3 +18,8 @@
     font-weight: 400;
     margin: 0;
 }
+
+.container-step-2 form{
+    min-width: 100%;
+    max-width: 100%;
+}
