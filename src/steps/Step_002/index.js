@@ -15,7 +15,7 @@ export default function Step002({
 }) {
   const [modalCancelAberto, setModalCancelAberto] = useState(false);
   const [modalErroAberto, setModalErroAberto] = useState(false);
-  const [isValid, setIsValid] = useState(false);
+  const [isValid, setIsValid] = useState('');
   const [email, setEmail] = useState();
 
   const handleChange = (event) => {
@@ -51,18 +51,20 @@ export default function Step002({
           ...prev,
           email: email,
         }));
-        setStep(4);
+        setStep(6);
       } else {
         console.log("Email já cadastrado, buscando cidadão existente");
         setCidadao((prev) => ({
           ...prev,
-          id_cidadao: data.id,
+          id: data.id,
         }));
 
         setSolicitacao((prev) => ({
           ...prev,
-          id: data.id,
+          id_cidadao: data.id,
         }));
+        
+        setStep(4);
       }
     } catch (error) {
       console.error("Erro ao enviar email:", error);
@@ -85,11 +87,6 @@ export default function Step002({
         onSubmit={async (event) => {
           event.preventDefault();
           await handleSubmitEmail(event);
-          if (isValid) {
-            setStep(6);
-          } else {
-            setModalErroAberto(true);
-          }
         }}
       >
         <InputEmail
@@ -100,7 +97,7 @@ export default function Step002({
           onChange={(event) => {
             handleChange(event);
           }}
-          validate={setIsValid}
+          setIsValid={setIsValid}
         />
 
         {console.log("Estado de validade do email:", isValid)}

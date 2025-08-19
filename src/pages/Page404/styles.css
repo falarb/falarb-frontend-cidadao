@@ -22,17 +22,18 @@
 
 .container404 h1{
     font-size: 100px;
-    color: #fff;
+    color: #3051FF;
     margin-bottom: -30px;
     opacity: .2;
 }
 
 .container404 h2,
 .container404 p{
-    color: #fff;
+    color: #00000090;
 }
 
 .container404 button{
-    background: #fff;
-    color: #3051FF;
+    background: #3051FF;
+    color: #fff;
+    max-width: max-content;
 }

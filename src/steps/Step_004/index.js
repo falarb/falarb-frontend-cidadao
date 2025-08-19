@@ -61,6 +61,10 @@ export default function Step004({ solicitacao, setSolicitacao, cidadao, setStep}
     }
   }, []);
 
+
+
+  console.log(cidadao)
+  console.log(solicitacao)
   return (
     <div className="container-step-4">
       <h2>

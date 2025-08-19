@@ -7,7 +7,7 @@ export default function InputEmail({
   value,
   onChange,
   placeholder,
-  validate,
+  setIsValid,
 }) {
   const [changed, setChanged] = useState(false);
   const isEmailValid = (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
@@ -20,9 +20,7 @@ export default function InputEmail({
   }, [value]);
 
   useEffect(() => {
-    if (validate) {
-      validate(isValid); // Passa o estado de validade pro pai
-    }
+    setIsValid(isValid); // Passa o estado de validade pro pai
   }, [isValid]);
 
   return (
@@ -35,7 +33,6 @@ export default function InputEmail({
         value={value}
         onChange={onChange}
         className={!isValid && changed ? "invalid" : ""}
-        validate={isValid}
       />
       {!isValid && changed && (
         <p className="invalid-text" style={{ color: "red" }}>

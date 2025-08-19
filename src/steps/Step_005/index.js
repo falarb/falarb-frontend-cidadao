@@ -101,9 +101,9 @@ console.log(solicitacao)
     const data = await fetchCriarSolicitacao.json();
     setSolicitacao(data);
     console.log(data)
-    navigate(`/acompanhar-solicitacao/${solicitacao.token_solicitacao}`)
+    navigate(`/visualizar-solicitacao/${data.token_solicitacao}`)
   } catch (error) {
-
+    throw new Error("Erro ao criar solicitação");
   }
  }
  
