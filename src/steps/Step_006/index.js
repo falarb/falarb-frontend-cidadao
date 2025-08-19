@@ -17,6 +17,7 @@ export default function Step006({
 }) {
   const [modalCancelAberto, setModalCancelAberto] = useState(false);
   const [modalErroAberto, setModalErroAberto] = useState(false);
+  const [modalIndisponivelAberto, setModalIndisponivelAberto] = useState(false);
   const [cpfValido, setCpfValido] = useState(false);
 
   useEffect(() => {
@@ -51,6 +52,7 @@ export default function Step006({
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
         console.error("Erro ao cadastrar cidadão - Detalhes:", errorData);
+        setModalIndisponivelAberto(true);
         throw new Error("Erro ao cadastrar cidadão");
       }
       const data = await response.json();
@@ -60,6 +62,7 @@ export default function Step006({
       }));
       setStep(4)
     } catch (error) {
+      setModalIndisponivelAberto(true);
       console.error("Erro ao cadastrar cidadão:", error);
       throw new Error("Erro ao cadastrar cidadão");
     }
@@ -151,6 +154,18 @@ export default function Step006({
           type="warning"
           title="Cancelar solicitação"
           description="Tem certeza que deseja cancelar a solicitação? Os dados não serão salvos."
+          onCancel={() => setModalCancelAberto(false)}
+          onConfirm={() => {
+            window.location.reload();
+          }}
+        ></Modal>
+      )}
+
+{modalIndisponivelAberto && (
+        <Modal
+          type="warning"
+          title="Ops... Algo errado aqui..."
+          description="Estamos enfrentando dificuldades para processar sua solicitação. Em instantes tente novamente."
           onCancel={() => setModalCancelAberto(false)}
           onConfirm={() => {
             window.location.reload();

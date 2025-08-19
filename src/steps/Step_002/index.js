@@ -15,7 +15,8 @@ export default function Step002({
 }) {
   const [modalCancelAberto, setModalCancelAberto] = useState(false);
   const [modalErroAberto, setModalErroAberto] = useState(false);
-  const [isValid, setIsValid] = useState('');
+  const [modalIndisponivelAberto, setModalIndisponivelAberto] = useState(false);
+  const [isValid, setIsValid] = useState("");
   const [email, setEmail] = useState();
 
   const handleChange = (event) => {
@@ -39,6 +40,7 @@ export default function Step002({
       );
 
       if (!emailResponse.ok) {
+        setModalIndisponivelAberto(true);
         throw new Error("Erro ao verificar email");
       }
 
@@ -63,11 +65,12 @@ export default function Step002({
           ...prev,
           id_cidadao: data.id,
         }));
-        
+
         setStep(4);
       }
     } catch (error) {
       console.error("Erro ao enviar email:", error);
+      setModalIndisponivelAberto(true);
     }
   };
 
@@ -86,7 +89,11 @@ export default function Step002({
       <form
         onSubmit={async (event) => {
           event.preventDefault();
-          await handleSubmitEmail(event);
+          if (isValid) {
+            await handleSubmitEmail(event);
+          } else {
+            setModalErroAberto(true);
+          }
         }}
       >
         <InputEmail
@@ -102,15 +109,19 @@ export default function Step002({
 
         {console.log("Estado de validade do email:", isValid)}
 
-        <BtnPrimary type="submit">Próximo passo</BtnPrimary>
+        <BtnPrimary type="submit">Verificar e-mail</BtnPrimary>
       </form>
 
-      <BtnSecundary onClick={ () => {
-        setStep(1);
-      }}>Voltar uma etapa</BtnSecundary>
+      <BtnSecundary
+        onClick={() => {
+          setStep(1);
+        }}
+      >
+        Voltar uma etapa
+      </BtnSecundary>
 
       <BtnSecundary
-        adicionalClassName="btn-cancel "
+        adicionalClassName="btn-cancel"
         onClick={() => {
           setModalCancelAberto(true);
         }}
@@ -133,6 +144,18 @@ export default function Step002({
           type="warning"
           title="Cancelar solicitação"
           description="Tem certeza que deseja cancelar a solicitação? Os dados não serão salvos."
+          onCancel={() => setModalCancelAberto(false)}
+          onConfirm={() => {
+            window.location.reload();
+          }}
+        ></Modal>
+      )}
+
+      {modalIndisponivelAberto && (
+        <Modal
+          type="warning"
+          title="Ops... Algo errado aqui..."
+          description="Estamos enfrentando dificuldades para processar sua solicitação. Em instantes tente novamente."
           onCancel={() => setModalCancelAberto(false)}
           onConfirm={() => {
             window.location.reload();

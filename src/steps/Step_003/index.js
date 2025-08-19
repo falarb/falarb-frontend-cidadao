@@ -11,10 +11,11 @@ export default function Step003({
   cidadao,
   setCidadao,
   step,
-  setStep
+  setStep,
 }) {
   const [modalCancelAberto, setModalCancelAberto] = useState(false);
   const [modalErroAberto, setModalErroAberto] = useState(false);
+  const [modalIndisponivelAberto, setModalIndisponivelAberto] = useState(false);
   const [validacao, setValidacao] = useState(false);
 
   const receberCodigo = async () => {
@@ -23,18 +24,21 @@ export default function Step003({
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/cidadaos/envia-token/${cidadao.id}`);
+      const response = await fetch(
+        `http://localhost:3000/api/cidadaos/envia-token/${cidadao.id}`
+      );
       if (!response.ok) {
-        throw new Error("Erro ao receber o código");  
+        setModalIndisponivelAberto(true);
+        throw new Error("Erro ao receber o código");
       }
       const data = await response.json();
-      console.log(data)
+      console.log(data);
     } catch (error) {
+      setModalIndisponivelAberto(true);
       console.error("Erro ao receber o código:", error);
       throw new Error("Erro ao receber o código");
     }
-
-  }
+  };
 
   receberCodigo();
 
@@ -74,7 +78,6 @@ export default function Step003({
             setModalErroAberto(true);
             return;
           }
-          
         }}
       >
         Verificar
@@ -108,6 +111,18 @@ export default function Step003({
           type="warning"
           title="Cancelar solicitação"
           description="Tem certeza que deseja cancelar a solicitação? Os dados não serão salvos."
+          onCancel={() => setModalCancelAberto(false)}
+          onConfirm={() => {
+            window.location.reload();
+          }}
+        ></Modal>
+      )}
+
+      {modalIndisponivelAberto && (
+        <Modal
+          type="warning"
+          title="Ops... Algo errado aqui..."
+          description="Estamos enfrentando dificuldades para processar sua solicitação. Em instantes tente novamente."
           onCancel={() => setModalCancelAberto(false)}
           onConfirm={() => {
             window.location.reload();

@@ -25,6 +25,7 @@ export default function Step005({
 }) {
   const [modalCancelAberto, setModalCancelAberto] = useState(false);
   const [modalErroAberto, setModalErroAberto] = useState(false);
+  const [modalIndisponivelAberto, setModalIndisponivelAberto] = useState(false);
   const [marker, setMarker] = useState(null);
   const [mapCenter, setMapCenter] = useState([-25.6196203, -50.6926748]); // Centro em Rebouças
 
@@ -78,36 +79,39 @@ export default function Step005({
     }, [center]);
     return null;
   };
-console.log(solicitacao)
+  console.log(solicitacao);
 
+  const criarsolicitação = async () => {
+    try {
+      const fetchCriarSolicitacao = await fetch(
+        "http://127.0.0.1:8000/api/solicitacoes",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            descricao: solicitacao.descricao,
+            id_categoria: solicitacao.id_categoria,
+            id_cidadao: solicitacao.id_cidadao,
+            id_comunidade: solicitacao.id_comunidade,
+            longitude: solicitacao.longitude,
+            latitude: solicitacao.latitude,
+          }),
+        }
+      );
 
- const criarsolicitação = async () => {
-  try{
-    const fetchCriarSolicitacao = await fetch ('http://127.0.0.1:8000/api/solicitacoes', {
-      method: 'POST', 
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        descricao: solicitacao.descricao,
-        id_categoria: solicitacao.id_categoria,
-        id_cidadao: solicitacao.id_cidadao,
-        id_comunidade: solicitacao.id_comunidade,
-        longitude: solicitacao.longitude,
-        latitude: solicitacao.latitude,
-      })
-    })
+      const data = await fetchCriarSolicitacao.json();
+      setSolicitacao(data);
+      console.log(data);
+      navigate(`/visualizar-solicitacao/${data.token_solicitacao}`);
+    } catch (error) {
+      setModalIndisponivelAberto(true);
+      throw new Error("Erro ao criar solicitação");
+    }
+  };
 
-    const data = await fetchCriarSolicitacao.json();
-    setSolicitacao(data);
-    console.log(data)
-    navigate(`/visualizar-solicitacao/${data.token_solicitacao}`)
-  } catch (error) {
-    throw new Error("Erro ao criar solicitação");
-  }
- }
- 
-console.log(solicitacao)
+  console.log(solicitacao);
   return (
     <div className="container-step-5">
       <h2>
@@ -166,7 +170,7 @@ console.log(solicitacao)
         adicionalClass="success"
         onClick={() => {
           if (solicitacao.latitude && solicitacao.longitude) {
-            criarsolicitação()
+            criarsolicitação();
           } else {
             setModalErroAberto(true);
           }
@@ -201,6 +205,18 @@ console.log(solicitacao)
           type="warning"
           title="Cancelar solicitação"
           description="Tem certeza que deseja cancelar a solicitação? Os dados não serão salvos."
+          onCancel={() => setModalCancelAberto(false)}
+          onConfirm={() => {
+            window.location.reload();
+          }}
+        ></Modal>
+      )}
+
+      {modalIndisponivelAberto && (
+        <Modal
+          type="warning"
+          title="Ops... Algo errado aqui..."
+          description="Estamos enfrentando dificuldades para processar sua solicitação. Em instantes tente novamente."
           onCancel={() => setModalCancelAberto(false)}
           onConfirm={() => {
             window.location.reload();

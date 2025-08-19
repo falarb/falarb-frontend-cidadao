@@ -27,7 +27,6 @@ export default function InputEmail({
     <div className="container-input-email">
       <label>{label}</label>
       <input
-        type="email"
         placeholder={placeholder}
         name={name}
         value={value}

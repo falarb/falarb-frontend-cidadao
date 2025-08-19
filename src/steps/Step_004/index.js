@@ -6,9 +6,15 @@ import TextArea from "../../components/TextArea";
 import Modal from "../../components/Modal";
 import "./styles.css";
 
-export default function Step004({ solicitacao, setSolicitacao, cidadao, setStep}) {
+export default function Step004({
+  solicitacao,
+  setSolicitacao,
+  cidadao,
+  setStep,
+}) {
   const [modalCancelAberto, setModalCancelAberto] = useState(false);
   const [modalErroAberto, setModalErroAberto] = useState(false);
+  const [modalIndisponivelAberto, setModalIndisponivelAberto] = useState(false);
   const [categorias, setCategorias] = useState([]);
   const [comunidades, setComunidades] = useState([]);
 
@@ -32,6 +38,7 @@ export default function Step004({ solicitacao, setSolicitacao, cidadao, setStep}
       );
 
       if (!listarCategorias.ok) {
+        setModalIndisponivelAberto(true);
         const errorData = await listarCategorias.json().catch(() => null);
         console.error("Erro ao listar categorias - Detalhes:", errorData);
         throw new Error("Erro ao listar categorias");
@@ -40,6 +47,7 @@ export default function Step004({ solicitacao, setSolicitacao, cidadao, setStep}
       const data = await listarCategorias.json();
       setCategorias(data);
     } catch (error) {
+      setModalIndisponivelAberto(true);
       throw new Error("Erro ao listar categorias");
     }
 
@@ -57,14 +65,13 @@ export default function Step004({ solicitacao, setSolicitacao, cidadao, setStep}
       const data = await listarComunidades.json();
       setComunidades(data);
     } catch (error) {
+      setModalIndisponivelAberto(true);
       throw new Error("Erro ao listar categorias");
     }
   }, []);
 
-
-
-  console.log(cidadao)
-  console.log(solicitacao)
+  console.log(cidadao);
+  console.log(solicitacao);
   return (
     <div className="container-step-4">
       <h2>
@@ -158,6 +165,18 @@ export default function Step004({ solicitacao, setSolicitacao, cidadao, setStep}
           type="warning"
           title="Cancelar solicitação"
           description="Tem certeza que deseja cancelar a solicitação? Os dados não serão salvos."
+          onCancel={() => setModalCancelAberto(false)}
+          onConfirm={() => {
+            window.location.reload();
+          }}
+        ></Modal>
+      )}
+
+      {modalIndisponivelAberto && (
+        <Modal
+          type="warning"
+          title="Ops... Algo errado aqui..."
+          description="Estamos enfrentando dificuldades para processar sua solicitação. Em instantes tente novamente."
           onCancel={() => setModalCancelAberto(false)}
           onConfirm={() => {
             window.location.reload();
