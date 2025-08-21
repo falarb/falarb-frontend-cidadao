@@ -8,8 +8,6 @@ import Modal from "../../components/Modal";
 import "./styles.css";
 
 export default function Step006({
-  solicitacao,
-  setSolicitacao,
   cidadao,
   setCidadao,
   step,
@@ -18,6 +16,10 @@ export default function Step006({
   const [modalCancelAberto, setModalCancelAberto] = useState(false);
   const [modalErroAberto, setModalErroAberto] = useState(false);
   const [modalIndisponivelAberto, setModalIndisponivelAberto] = useState(false);
+  const [modalValidacao, setModalValidacao] = useState({
+    aberto: false,
+    mensagem: "",
+  });
   const [cpfValido, setCpfValido] = useState(false);
 
   useEffect(() => {
@@ -52,15 +54,15 @@ export default function Step006({
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
         console.error("Erro ao cadastrar cidadão - Detalhes:", errorData);
-        setModalIndisponivelAberto(true);
-        throw new Error("Erro ao cadastrar cidadão");
+        setModalValidacao([true, errorData]);
+        return;
       }
       const data = await response.json();
       setCidadao((prev) => ({
         ...prev,
         id: data.id,
       }));
-      setStep(4)
+      setStep(3)
     } catch (error) {
       setModalIndisponivelAberto(true);
       console.error("Erro ao cadastrar cidadão:", error);
@@ -161,15 +163,33 @@ export default function Step006({
         ></Modal>
       )}
 
-{modalIndisponivelAberto && (
+      {modalIndisponivelAberto && (
         <Modal
           type="warning"
           title="Ops... Algo errado aqui..."
           description="Estamos enfrentando dificuldades para processar sua solicitação. Em instantes tente novamente."
-          onCancel={() => setModalCancelAberto(false)}
+          onCancel={() => setModalIndisponivelAberto(false)}
           onConfirm={() => {
             window.location.reload();
           }}
+        ></Modal>
+      )}
+
+      {modalValidacao[0] && (
+        <Modal
+          type="warning"
+          title="Ops... Algo errado aqui..."
+          onCancel={() => setModalValidacao(false)}
+          onConfirm={() => setModalValidacao(false)}
+          description={Object.entries(modalValidacao[1]).map(
+            ([campo, erros]) => (
+              <div key={campo}>
+                {erros.map((erro, i) => (
+                  <p key={i}>{erro}</p>
+                ))}
+              </div>
+            )
+          )}
         ></Modal>
       )}
     </div>

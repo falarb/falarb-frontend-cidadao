@@ -1,87 +1,122 @@
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import BtnPrimary from "../../components/Btn/BtnPrimary";
 import BtnSecundary from "../../components/Btn/BtnSecundary";
 import InputCode from "../../components/Input/InputCode";
 import Modal from "../../components/Modal";
 import "./styles.css";
 
-export default function Step003({
-  solicitacao,
-  setSolicitacao,
-  cidadao,
-  setCidadao,
-  step,
-  setStep,
-}) {
+export default function Step003({ cidadao, step, setStep }) {
   const [modalCancelAberto, setModalCancelAberto] = useState(false);
   const [modalErroAberto, setModalErroAberto] = useState(false);
   const [modalIndisponivelAberto, setModalIndisponivelAberto] = useState(false);
-  const [validacao, setValidacao] = useState(false);
+  const enviadoRef = useRef(false);
+  const [token, setToken] = useState('');
 
-  const receberCodigo = async () => {
-    if (step !== 3) {
-      setStep(1);
+  useEffect(() => {
+    if (!cidadao.id || step !== 3) return;
+
+    const enviarToken = async () => {
+      try {
+        const response = await fetch(
+          `http://127.0.0.1:8000/api/cidadaos/envia-token/${cidadao.id}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          setModalIndisponivelAberto(true);
+          throw new Error("Erro ao enviar o código.");
+        }
+
+        const data = await response.json();
+        if (data) {
+          enviadoRef.current = true;
+        }
+      } catch (error) {
+        setModalIndisponivelAberto(true);
+        console.error("Erro ao enviar o código:", error);
+      }
+    };
+
+    if (!enviadoRef.current) {
+      enviadoRef.current = true;
+      enviarToken();
     }
+  }, [cidadao.id, step]);
 
+  const validarToken = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/cidadaos/envia-token/${cidadao.id}`
+        `http://127.0.0.1:8000/api/cidadaos/verifica-email/${cidadao.id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: token,
+          }),
+        }
       );
-      if (!response.ok) {
-        setModalIndisponivelAberto(true);
-        throw new Error("Erro ao receber o código");
-      }
+
       const data = await response.json();
+      const resposta = await response;
+
+      if (resposta.status === 200) {
+        setStep(4)
+      } else if (resposta.status === 400) {
+        alert("invalid");
+      } else {
+        setModalIndisponivelAberto(true);
+        console.error("Erro ao validar o código");
+        throw new Error("Erro ao validar o código");
+      }
       console.log(data);
     } catch (error) {
       setModalIndisponivelAberto(true);
-      console.error("Erro ao receber o código:", error);
-      throw new Error("Erro ao receber o código");
+      console.error("Erro ao validar o código:", error);
+      throw new Error("Erro ao validar o código");
     }
   };
 
-  receberCodigo();
-
   const handleChange = (event) => {
-    const codigo_uninco = event.target.value;
-
-    if (codigo_uninco !== "1234") {
-      setValidacao(true);
-    } else {
-      setValidacao(false);
-    }
-
-    setSolicitacao((prev) => ({
-      ...prev,
-      [event.target.name]: event.target.value,
-    }));
+    const token_inserido = event.target.value;
+    setToken(token_inserido);
   };
 
   return (
     <div className="container-step-3">
       <h2>
         Insira abaixo o código que enviamos para o seu endereço de email -{" "}
-        <span className="accent-color">{solicitacao.email}</span>
+        <span className="accent-color">{cidadao.email}</span>
       </h2>
 
-      <InputCode
-        name="codigo_uninco"
-        placeholder="1234"
-        mask="9999"
-        value={solicitacao.codigo_uninco}
-        onChange={handleChange}
-      />
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
 
-      <BtnPrimary
-        onClick={() => {
-          if (validacao) {
-            setModalErroAberto(true);
-            return;
+          if( token !== '' ||  token === null){
+            validarToken();
+          } else {
+            alert('Preencha o código')
           }
+
         }}
       >
-        Verificar
-      </BtnPrimary>
+        <InputCode
+          name="codigo_uninco"
+          placeholder="1234"
+          mask="9999"
+          value={token}
+          onChange={handleChange}
+        />
+
+        <BtnPrimary type="submit">Verificar</BtnPrimary>
+      </form>
 
       <BtnSecundary adicionalClass="btn-back" onClick={0}>
         Não recebi o código

@@ -18,6 +18,7 @@ export default function Step002({
   const [modalIndisponivelAberto, setModalIndisponivelAberto] = useState(false);
   const [isValid, setIsValid] = useState("");
   const [email, setEmail] = useState();
+  const [carregando, setCarregando] = useState(false);
 
   const handleChange = (event) => {
     setCidadao((prev) => ({
@@ -28,6 +29,7 @@ export default function Step002({
   };
 
   const handleSubmitEmail = async () => {
+    setCarregando(true);
     try {
       console.log("Email recebido:", email);
 
@@ -66,11 +68,13 @@ export default function Step002({
           id_cidadao: data.id,
         }));
 
-        setStep(4);
+        setStep(3);
       }
     } catch (error) {
       console.error("Erro ao enviar email:", error);
       setModalIndisponivelAberto(true);
+    } finally {
+      setCarregando(false)
     }
   };
 
@@ -80,6 +84,7 @@ export default function Step002({
 
   return (
     <div className="container-step-2">
+        {carregando ? '' : ''}
       <h2>
         Bem vindo ao <span className="accent-color">SolicitaAi</span>
       </h2>
@@ -156,7 +161,7 @@ export default function Step002({
           type="warning"
           title="Ops... Algo errado aqui..."
           description="Estamos enfrentando dificuldades para processar sua solicitação. Em instantes tente novamente."
-          onCancel={() => setModalCancelAberto(false)}
+          onCancel={() => setModalIndisponivelAberto(false)}
           onConfirm={() => {
             window.location.reload();
           }}
