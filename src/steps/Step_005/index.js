@@ -7,6 +7,7 @@ import "leaflet/dist/leaflet.css";
 import "./styles.css";
 import L from "leaflet";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../components/Loading";
 
 // Corrige o ícone padrão do Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -27,7 +28,8 @@ export default function Step005({
   const [modalErroAberto, setModalErroAberto] = useState(false);
   const [modalIndisponivelAberto, setModalIndisponivelAberto] = useState(false);
   const [marker, setMarker] = useState(null);
-  const [mapCenter, setMapCenter] = useState([-25.6196203, -50.6926748]); // Centro em Rebouças
+  const [mapCenter, setMapCenter] = useState([-25.6196203, -50.6926748]); 
+  const [carregando, setCarregando] = useState(false);
 
   let navigate = useNavigate();
 
@@ -83,6 +85,7 @@ export default function Step005({
 
   const criarsolicitação = async () => {
     try {
+      setCarregando(true);
       const fetchCriarSolicitacao = await fetch(
         "http://127.0.0.1:8000/api/solicitacoes",
         {
@@ -108,12 +111,14 @@ export default function Step005({
     } catch (error) {
       setModalIndisponivelAberto(true);
       throw new Error("Erro ao criar solicitação");
+    } finally {
+      setCarregando(false);
     }
   };
 
-  console.log(solicitacao);
   return (
     <div className="container-step-5">
+      {carregando && <Loading />}
       <h2>
         Agora precisamos que nos informe sobre o{" "}
         <span className="accent-color">local exato</span> da solicitação.

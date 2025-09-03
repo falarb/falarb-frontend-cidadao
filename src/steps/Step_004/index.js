@@ -17,6 +17,8 @@ export default function Step004({
   const [modalIndisponivelAberto, setModalIndisponivelAberto] = useState(false);
   const [categorias, setCategorias] = useState([]);
   const [comunidades, setComunidades] = useState([]);
+  const [carregando, setCarregando] = useState(false);
+
 
   const handleChange = (event) => {
     setSolicitacao((prev) => ({
@@ -33,6 +35,7 @@ export default function Step004({
     }));
 
     try {
+      setCarregando(true);
       const listarCategorias = await fetch(
         "http://127.0.0.1:8000/api/categorias"
       );
@@ -49,9 +52,12 @@ export default function Step004({
     } catch (error) {
       setModalIndisponivelAberto(true);
       throw new Error("Erro ao listar categorias");
+    } finally{
+      setCarregando(false);
     }
 
     try {
+      setCarregando(true);
       const listarComunidades = await fetch(
         "http://127.0.0.1:8000/api/comunidades"
       );
@@ -67,11 +73,11 @@ export default function Step004({
     } catch (error) {
       setModalIndisponivelAberto(true);
       throw new Error("Erro ao listar categorias");
+    } finally{
+      setCarregando(false);
     }
   }, []);
 
-  console.log(cidadao);
-  console.log(solicitacao);
   return (
     <div className="container-step-4">
       <h2>
@@ -90,10 +96,10 @@ export default function Step004({
       <SelectCustom
         label="Selecione qual a sua comunidade"
         name="id_comunidade"
-        value={solicitacao.id_comunidade}
+        value={solicitacao?.id_comunidade}
         onChange={handleChange}
       >
-        {comunidades?.map((comunidade) => (
+        {comunidades?.dados?.map((comunidade) => (
           <option key={comunidade.id} value={comunidade.id}>
             {comunidade.nome}
           </option>
@@ -103,10 +109,10 @@ export default function Step004({
       <SelectCustom
         label="Selecione o tipo de solicitação"
         name="id_categoria"
-        value={solicitacao.id_categoria}
+        value={solicitacao?.id_categoria}
         onChange={handleChange}
       >
-        {categorias?.map((categoria) => (
+        {categorias?.dados?.map((categoria) => (
           <option key={categoria.id} value={categoria.id}>
             {categoria.nome}
           </option>
@@ -117,16 +123,16 @@ export default function Step004({
         label="Descreva sua solicitação"
         name="descricao"
         placeholder="Descreva sua solicitação aqui..."
-        value={solicitacao.descricao}
+        value={solicitacao?.descricao}
         onChange={handleChange}
       />
 
       <BtnPrimary
         onClick={() => {
           if (
-            solicitacao.id_comunidade !== "" &&
-            solicitacao.id_categoria !== "" &&
-            solicitacao.id_cidadao !== ""
+            solicitacao?.id_comunidade !== "" &&
+            solicitacao?.id_categoria !== "" &&
+            solicitacao?.id_cidadao !== ""
           ) {
             setStep(5);
           } else {

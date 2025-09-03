@@ -4,6 +4,7 @@ import BtnSecundary from "../../components/Btn/BtnSecundary";
 import InputEmail from "../../components/Input/InputEmail";
 import Modal from "../../components/Modal";
 import "./styles.css";
+import Loading from "../../components/Loading";
 
 export default function Step002({
   solicitacao,
@@ -84,7 +85,7 @@ export default function Step002({
 
   return (
     <div className="container-step-2">
-        {carregando ? '' : ''}
+        {carregando ? <Loading/> : ''}
       <h2>
         Bem vindo ao <span className="accent-color">SolicitaAi</span>
       </h2>

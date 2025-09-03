@@ -6,6 +6,7 @@ import InputCustomMask from "../../components/Input/InputCustomMask";
 import InputCPF from "../../components/Input/InputCPF";
 import Modal from "../../components/Modal";
 import "./styles.css";
+import Loading from "../../components/Loading";
 
 export default function Step006({
   cidadao,
@@ -21,6 +22,7 @@ export default function Step006({
     mensagem: "",
   });
   const [cpfValido, setCpfValido] = useState(false);
+  const [carregando, setCarregando] = useState(false);
 
   useEffect(() => {
     console.log(cidadao);
@@ -39,6 +41,7 @@ export default function Step006({
     }
 
     try {
+      setCarregando(true);
       const response = await fetch(`http://127.0.0.1:8000/api/cidadaos`, {
         method: "POST",
         headers: {
@@ -67,11 +70,14 @@ export default function Step006({
       setModalIndisponivelAberto(true);
       console.error("Erro ao cadastrar cidadão:", error);
       throw new Error("Erro ao cadastrar cidadão");
+    } finally {
+      setCarregando(false);
     }
   };
 
   return (
     <div className="container-step-4">
+      {carregando && <Loading />}
       <h1>Quase lá...</h1>
 
       <h2>Insira seus dados para poder registrar solicitações.</h2>
@@ -84,7 +90,7 @@ export default function Step006({
       <InputText
         label="Qual seu nome completo?"
         name="nome"
-        value={cidadao.nome}
+        value={cidadao?.nome}
         onChange={handleChange}
         placeholder="Digite seu nome completo"
       />
@@ -92,7 +98,7 @@ export default function Step006({
       <InputCustomMask
         label="Qual seu celular?"
         name="celular"
-        value={cidadao.celular}
+        value={cidadao?.celular}
         onChange={handleChange}
         placeholder="99999999999"
         mask="99999999999"
@@ -101,7 +107,7 @@ export default function Step006({
       <InputCPF
         label="Qual o número do seu CPF?"
         name="cpf"
-        value={cidadao.cpf}
+        value={cidadao?.cpf}
         onChange={handleChange}
         placeholder="12345678910"
         mask="99999999999"
@@ -113,7 +119,7 @@ export default function Step006({
 
       <BtnPrimary
         onClick={() => {
-          if (cidadao.nome && cidadao.celular && cpfValido) {
+          if (cidadao?.nome && cidadao?.celular && cpfValido) {
             cadastrarCidadao();
           } else {
             alert("Por favor, selecione corretamente os campos.");

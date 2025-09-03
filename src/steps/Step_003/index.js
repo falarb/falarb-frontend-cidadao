@@ -9,6 +9,7 @@ export default function Step003({ cidadao, step, setStep }) {
   const [modalCancelAberto, setModalCancelAberto] = useState(false);
   const [modalErroAberto, setModalErroAberto] = useState(false);
   const [modalIndisponivelAberto, setModalIndisponivelAberto] = useState(false);
+  const [carregando, setCarregando] = useState(false);
   const enviadoRef = useRef(false);
   const [token, setToken] = useState('');
 
@@ -17,6 +18,7 @@ export default function Step003({ cidadao, step, setStep }) {
 
     const enviarToken = async () => {
       try {
+        setCarregando(true);
         const response = await fetch(
           `http://127.0.0.1:8000/api/cidadaos/envia-token/${cidadao.id}`,
           {
@@ -39,6 +41,8 @@ export default function Step003({ cidadao, step, setStep }) {
       } catch (error) {
         setModalIndisponivelAberto(true);
         console.error("Erro ao enviar o código:", error);
+      } finally{
+        setCarregando(false);
       }
     };
 
