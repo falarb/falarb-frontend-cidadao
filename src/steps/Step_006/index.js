@@ -144,7 +144,7 @@ export default function Step006({
           setModalCancelAberto(true);
         }}
       >
-        Cancelar solicitacao
+        Cancelar solicitação
       </BtnSecundary>
 
       {modalErroAberto && (

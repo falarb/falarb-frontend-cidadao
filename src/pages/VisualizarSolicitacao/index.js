@@ -1,10 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "leaflet/dist/leaflet.css";
 import html2canvas from "html2canvas";
+import './styles.css';
 
 import BtnPrimary from "../../components/Btn/BtnPrimary";
 import BtnSecundary from "../../components/Btn/BtnSecundary";
+import moment from "moment";
+import { parseStatus, pegaCorStatus } from "../../utils/functions";
+import axiosInstance from "../../utils/axiosInstance";
+import Modal from "../../components/Modal";
+import Loading from "../../components/Loading";
 
 export default function VisualizarSolicitacao() {
   const navigate = useNavigate();
@@ -12,7 +18,8 @@ export default function VisualizarSolicitacao() {
   const token = data.token;
 
   const [solicitacao, setSolicitacao] = useState(null);
-  const [modalErroAberto, setModalErroAberto] = useState(false);
+  const [modalIndisponivelAberto, setModalIndisponivelAberto] = useState(false);
+  const [carregando, setCarregando] = useState(false);
 
   const handleSaveAsImage = async () => {
     const element = document.getElementById("container-progress");
@@ -24,100 +31,101 @@ export default function VisualizarSolicitacao() {
     link.click();
   };
 
-  const buscarSolicitacao = async () => {
+  const buscarSolicitacao = useCallback(async () => {
+    setCarregando(true);
     try {
-      const fetchSolicitacao = await fetch(
-        `http://127.0.0.1:8000/api/solicitacoes/busca-por-token/${token}`
-      );
+      const { data } = await axiosInstance.get(`/solicitacoes/busca-por-token/${token}`);
 
-      if (!fetchSolicitacao.ok) {
-        return 0
-      }
-
-      const dadoRecebido = await fetchSolicitacao.json();
-      if (dadoRecebido.error) {
-        setModalErroAberto(true);
-        alert("solicitacao não encontrada");
-        console.log(dadoRecebido);
-      } else {
-        setSolicitacao(dadoRecebido);
-        console.log(dadoRecebido);
-      }
+      setSolicitacao(data);
     } catch (error) {
-      return 0
-    }
-  };
+      setModalIndisponivelAberto(true);
+      console.error("Erro ao buscar solicitação:", error);
+    } finally { setCarregando(false); }
+  }, [token]);
 
   useEffect(() => {
     buscarSolicitacao();
-  }, []);
-
-  if (!solicitacao) return <p>Carregando...</p>;
+  }, [buscarSolicitacao]);
 
   return (
-    
-    <div className="container-review-progress">
-      <div className="container-progress" id="container-progress">
-        <p>Andamento da solicitação</p>
-        <h1>{solicitacao?.token_solicitacao}</h1>
+    <>
+      {carregando && <Loading />}
 
-        <span className="status">{solicitacao?.status}</span>
+      <div className="container-review-progress">
+        <div className="container-progress" id="container-progress">
+          <p>Andamento da solicitação</p>
+          <h1>{solicitacao?.token_solicitacao}</h1>
 
-        <div className="box-info">
-          <span className="info">Data de abertura</span>
-          
+          <span className="status" style={{ backgroundColor: pegaCorStatus(solicitacao?.status) }}>{parseStatus(solicitacao?.status)}</span>
+
+          <div className="box-info">
+            <span className="info">Data de abertura</span>
+            <span className="data">{moment(solicitacao?.created_at).format("DD/MM/YYYY HH:mm")}</span>
+          </div>
+
+          <div className="box-info">
+            <span className="info">Nome do solicitante</span>
+            <span className="data">{solicitacao?.cidadao.nome}</span>
+          </div>
+
+          <div className="box-info">
+            <span className="info">Celular do solicitante</span>
+            <span className="data">{solicitacao?.cidadao.telefone}</span>
+          </div>
+
+          <div className="box-info">
+            <span className="info">CPF do solicitante</span>
+            <span className="data">{solicitacao?.cidadao.cpf}</span>
+          </div>
+
+          <div className="box-info">
+            <span className="info">Email do solicitante</span>
+            <span className="data">{solicitacao?.cidadao.email}</span>
+          </div>
+
+          <div className="box-info">
+            <span className="info">Comunidade da solicitação</span>
+            <span className="data">{solicitacao?.comunidade.nome}</span>
+          </div>
+
+          <div className="box-info">
+            <span className="info">Tipo da solicitação</span>
+            <span className="data">{solicitacao?.categoria.nome}</span>
+          </div>
+
+          {solicitacao?.descricao &&
+            <div className="box-info">
+              <span className="info">Descrição da solicitação</span>
+              <span className="data">{solicitacao?.descricao}</span>
+            </div>
+          }
+
+          <div className="box-info-small">
+            <span>Latitude inserida no mapa: {solicitacao?.latitude}</span>
+            <span>Longitude inserida no mapa: {solicitacao?.longitude}</span>
+          </div>
         </div>
 
-        <div className="box-info">
-          <span className="info">Nome do solicitante</span>
-          <span className="data">{solicitacao?.cidadao.nome}</span>
-        </div>
+        <BtnPrimary onClick={handleSaveAsImage}>Salvar comprovante</BtnPrimary>
 
-        <div className="box-info">
-          <span className="info">Celular do solicitante</span>
-          <span className="data">{solicitacao?.cidadao.telefone}</span>
-        </div>
+        <BtnSecundary
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Voltar ao início
+        </BtnSecundary>
 
-        <div className="box-info">
-          <span className="info">CPF do solicitante</span>
-          <span className="data">{solicitacao?.cidadao.cpf}</span>
-        </div>
-
-        <div className="box-info">
-          <span className="info">Email do solicitante</span>
-          <span className="data">{solicitacao?.cidadao.email}</span>
-        </div>
-
-        <div className="box-info">
-          <span className="info">Comunidade da solicitação</span>
-          <span className="data">{solicitacao?.comunidade.nome}</span>
-        </div>
-
-        <div className="box-info">
-          <span className="info">Tipo da solicitação</span>
-          <span className="data">{solicitacao?.categoria.nome}</span>
-        </div>
-
-        <div className="box-info">
-          <span className="info">Descrição da solicitação</span>
-          <span className="data">{solicitacao?.descricao}</span>
-        </div>
-
-        <div className="box-info-small">
-          <span>Latitude inserida no mapa: {solicitacao?.latitude}</span>
-          <span>Longitude inserida no mapa: {solicitacao?.longitude}</span>
-        </div>
+        {modalIndisponivelAberto && (
+          <Modal
+            type="warning"
+            title="Solicitação indisponível"
+            description="Sua solicitação não foi encontrada. Verifique o código e tente novamente."
+            onCancel={() => setModalIndisponivelAberto(false)}
+            onConfirm={() => setModalIndisponivelAberto(false)}
+          ></Modal>
+        )}
       </div>
-
-      <BtnPrimary onClick={handleSaveAsImage}>Salvar comprovante</BtnPrimary>
-
-      <BtnSecundary
-        onClick={() => {
-          navigate("/");
-        }}
-      >
-        Voltar ao início
-      </BtnSecundary>
-    </div>
+    </>
   );
 }

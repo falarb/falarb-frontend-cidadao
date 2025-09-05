@@ -7,19 +7,21 @@ export default function Step001({ step, setStep, onClickReviewRequest }) {
       <h2>
         Bem vindo ao <span className="accent-color">SolicitaAi</span>
       </h2>
+
       <p>Clique abaixo para realizar a sua solicitação</p>
+
       <BtnPrimary
         adicionalClass="success"
-        onClick={() => {
-          setStep(2);
-        }}
+        onClick={() => { setStep(2) }}
       >
         Realizar solicitação
       </BtnPrimary>
+
       <p>
         Clique abaixo para acompanhar sua solicitação através do seu código
         único.
       </p>
+
       <BtnPrimary onClick={onClickReviewRequest}>
         Acompanhar solicitação
       </BtnPrimary>

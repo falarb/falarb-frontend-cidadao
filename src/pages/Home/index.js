@@ -6,13 +6,9 @@ import Step002 from "../../steps/Step_002";
 import Step003 from "../../steps/Step_003";
 import Step004 from "../../steps/Step_004";
 import Step005 from "../../steps/Step_005";
-import Step006 from "../../steps/Step_006";
-import Progress from "../../pages/Progress";
-import Loading from "../../components/Loading";
 
 export default function Home({ nameInput, valueInput }) {
   const [step, setStep] = useState(1);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const [solicitacao, setSolicitacao] = useState({
@@ -35,96 +31,77 @@ export default function Home({ nameInput, valueInput }) {
   });
 
   useEffect(() => {
-    if (nameInput && valueInput !== undefined) {
-      setSolicitacao((prev) => ({
-        ...prev,
-        [nameInput]: valueInput,
-      }));
+    const storedCidadaoId = localStorage.getItem("cidadaoId");
+    const storedCidadaoExpiracao = localStorage.getItem("cidadaoExpiracao");
+
+    if (storedCidadaoId && storedCidadaoExpiracao) {
+      const expiracao = new Date(storedCidadaoExpiracao);
+      const agora = new Date();
+
+      if (agora < expiracao) {
+        setCidadao((prev) => ({
+          ...prev,
+          id: storedCidadaoId,
+        }));
+
+        setSolicitacao((prev) => ({
+          ...prev,
+          id_cidadao: storedCidadaoId,
+        }));
+
+        setStep(4);
+      } else {
+        localStorage.removeItem("cidadaoId");
+        localStorage.removeItem("cidadaoExpiracao");
+      }
     }
-  }, [nameInput, valueInput]);
+  }, []);
 
   const steps = {
     1: (
-      <>
-        {loading && <Loading />}
-        <Step001
-          step={step}
-          setStep={setStep}
-          onClickReviewRequest={() => navigate("/acompanhar-solicitacao")}
-        />
-      </>
+      <Step001
+        step={step}
+        setStep={setStep}
+        onClickReviewRequest={() => navigate("/acompanhar-solicitacao")}
+      />
     ),
     2: (
-      <>
-        {loading && <Loading />}
-        <Step002
-          solicitacao={solicitacao}
-          setSolicitacao={setSolicitacao}
-          cidadao={cidadao}
-          setCidadao={setCidadao}
-          step={step}
-          setStep={setStep}
-        />
-      </>
+      <Step002
+        solicitacao={solicitacao}
+        setSolicitacao={setSolicitacao}
+        cidadao={cidadao}
+        setCidadao={setCidadao}
+        step={step}
+        setStep={setStep}
+      />
     ),
     3: (
-      <>
-        {loading && <Loading />}
-        <Step003
-          solicitacao={solicitacao}
-          setSolicitacao={setSolicitacao}
-          cidadao={cidadao}
-          setCidadao={setCidadao}
-          step={step}
-          setStep={setStep}
-        />
-      </>
+      <Step003
+        solicitacao={solicitacao}
+        setSolicitacao={setSolicitacao}
+        cidadao={cidadao}
+        setCidadao={setCidadao}
+        step={step}
+        setStep={setStep}
+      />
     ),
     4: (
-      <>
-        {loading && <Loading />}
-        <Step004
-          solicitacao={solicitacao}
-          setSolicitacao={setSolicitacao}
-          cidadao={cidadao}
-          setCidadao={setCidadao}
-          step={step}
-          setStep={setStep}
-        />
-      </>
+      <Step004
+        solicitacao={solicitacao}
+        setSolicitacao={setSolicitacao}
+        cidadao={cidadao}
+        setCidadao={setCidadao}
+        step={step}
+        setStep={setStep}
+      />
     ),
     5: (
-      <>
-        {loading && <Loading />}
-        <Step005
-          solicitacao={solicitacao}
-          setSolicitacao={setSolicitacao}
-          cidadao={cidadao}
-          setCidadao={setCidadao}
-          step={step}
-          setStep={setStep}
-        />
-      </>
-    ),
-    6: (
-      <>
-        {loading && <Loading />}
-        <Step006
-          solicitacao={solicitacao}
-          setSolicitacao={setSolicitacao}
-          cidadao={cidadao}
-          setCidadao={setCidadao}
-          step={step}
-          setStep={setStep}
-        />
-      </>
-    ),
-    7: (
-      <>
-        {loading && <Loading />}
-        <Progress solicitacao={solicitacao} />
-      </>
-    ),
+      <Step005
+        solicitacao={solicitacao}
+        setSolicitacao={setSolicitacao}
+        setStep={setStep}
+      />
+    )
   };
 
   return (
