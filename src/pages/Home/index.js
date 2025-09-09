@@ -6,6 +6,7 @@ import Step002 from "../../steps/Step_002";
 import Step003 from "../../steps/Step_003";
 import Step004 from "../../steps/Step_004";
 import Step005 from "../../steps/Step_005";
+import Step006 from "../../steps/Step_006";
 
 export default function Home({ nameInput, valueInput }) {
   const [step, setStep] = useState(1);
@@ -99,6 +100,14 @@ export default function Home({ nameInput, valueInput }) {
       <Step005
         solicitacao={solicitacao}
         setSolicitacao={setSolicitacao}
+        setStep={setStep}
+      />
+    ),
+    6: (
+      <Step006
+        cidadao={cidadao}
+        setCidadao={setCidadao}
+        step={step}
         setStep={setStep}
       />
     )

@@ -7,7 +7,7 @@ import './styles.css';
 import BtnPrimary from "../../components/Btn/BtnPrimary";
 import BtnSecundary from "../../components/Btn/BtnSecundary";
 import moment from "moment";
-import { parseStatus, pegaCorStatus } from "../../utils/functions";
+import { formataCpf, formataTelefone, parseStatus, pegaCorStatus } from "../../utils/functions";
 import axiosInstance from "../../utils/axiosInstance";
 import Modal from "../../components/Modal";
 import Loading from "../../components/Loading";
@@ -60,7 +60,7 @@ export default function VisualizarSolicitacao() {
 
           <div className="box-info">
             <span className="info">Data de abertura</span>
-            <span className="data">{moment(solicitacao?.created_at).format("DD/MM/YYYY HH:mm")}</span>
+            <span className="data">{moment(solicitacao?.created_at).format("DD/MM/YYYY HH:mm:ss")}</span>
           </div>
 
           <div className="box-info">
@@ -70,12 +70,12 @@ export default function VisualizarSolicitacao() {
 
           <div className="box-info">
             <span className="info">Celular do solicitante</span>
-            <span className="data">{solicitacao?.cidadao.telefone}</span>
+            <span className="data">{formataTelefone(solicitacao?.cidadao?.telefone)}</span>
           </div>
 
           <div className="box-info">
             <span className="info">CPF do solicitante</span>
-            <span className="data">{solicitacao?.cidadao.cpf}</span>
+            <span className="data">{formataCpf(solicitacao?.cidadao?.cpf)}</span>
           </div>
 
           <div className="box-info">

@@ -60,8 +60,9 @@
 .container-progress .box-info-small {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: fit-content;
     height: 100%;
     margin: 0;
     gap: 10px;
+    align-items: flex-start;
 }

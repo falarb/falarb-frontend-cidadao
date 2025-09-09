@@ -182,7 +182,7 @@ export default function Step005({
             }
           }}
         >
-          Confirmar localização e continuar
+          Criar solicitação
         </BtnPrimary>
 
         <BtnSecundary adicionalClass="btn-back" onClick={() => setStep(4)}>
