@@ -1,6 +1,6 @@
 import './styles.css'
 
-export default function TextArea ( { label, type, name, value, onChange, adicionalClass, placeholder, required} ) {
+export default function TextArea ( { label, type, name, value, onChange, adicionalClass, placeholder, required, maxLength } ) {
     return ( 
         <div className="container-text-area">
             <label>{label}</label>
@@ -12,6 +12,7 @@ export default function TextArea ( { label, type, name, value, onChange, adicion
                 onChange={onChange}
                 placeholder={placeholder}
                 required={required}
+                maxLength={maxLength}
             />
         </div>
     )

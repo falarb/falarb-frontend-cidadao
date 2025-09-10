@@ -32,6 +32,7 @@ export default function Step005({
   const [mapCenter, setMapCenter] = useState([-25.6196203, -50.6926748]);
   const [carregando, setCarregando] = useState(false);
   const [localizacaoPermitida, setLocalizacaoPermitida] = useState(false);
+  const [messageModal, setMessageModal] = useState({ titulo: "", descricao: "" });
 
   let navigate = useNavigate();
 
@@ -107,10 +108,21 @@ export default function Step005({
       });
 
       setSolicitacao(data);
+      localStorage.removeItem("cidadaoId");
 
       navigate(`/visualizar-solicitacao/${data?.token_solicitacao}`);
     } catch (error) {
-      setModalIndisponivelAberto(true);
+      if (error?.response?.data?.tipo === "texto ofensivo") {
+        setMessageModal({
+          titulo: "Texto ofensivo detectado",
+          descricao: "Sua solicitação contém palavras que não são permitidas em nossa plataforma. Por favor, revise o texto e tente novamente sem utilizar termos ofensivos."
+        });
+
+        setModalErroAberto(true);
+      } else {
+        setModalIndisponivelAberto(true);
+      }
+
       throw new Error("Erro ao criar solicitação");
     } finally { setCarregando(false); }
   };
@@ -199,8 +211,8 @@ export default function Step005({
         {modalErroAberto && (
           <Modal
             type="danger"
-            title="Por favor, siga as instruções da página"
-            description="Permita acesso à sua localização ou marque uma localização no mapa."
+            title={messageModal?.titulo || "Por favor, siga as instruções da página"}
+            description={messageModal?.descricao || "Permita acesso à sua localização ou marque uma localização no mapa."}
             onCancel={() => setModalErroAberto(false)}
             onConfirm={() => setModalErroAberto(false)}
           ></Modal>

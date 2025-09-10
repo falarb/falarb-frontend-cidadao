@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import BtnPrimary from "../../components/Btn/BtnPrimary";
 import BtnSecundary from "../../components/Btn/BtnSecundary";
-import SelectCustom from "../../components/SelectCustom";
 import TextArea from "../../components/TextArea";
 import Modal from "../../components/Modal";
 import "./styles.css";
 import axiosInstance from "../../utils/axiosInstance";
 import Loading from "../../components/Loading";
 import { deslogarCidadao } from "../../utils/functions";
+import AutoCompleteCustom from "../../components/AutoCompleteCustom";
 
 export default function Step004({
   solicitacao,
@@ -72,39 +72,45 @@ export default function Step004({
             os campos abaixo solicitados e ao final clicar em “Enviar solicitação”
           </small>
 
-          <SelectCustom
-            label="Selecione qual a sua comunidade"
+          <AutoCompleteCustom
             name="id_comunidade"
-            value={solicitacao?.id_comunidade}
-            onChange={handleChange}
-          >
-            {comunidades?.map((comunidade) => (
-              <option key={comunidade?.id} value={comunidade?.id}>
-                {comunidade?.nome}
-              </option>
-            ))}
-          </SelectCustom>
-
-          <SelectCustom
-            label="Selecione o tipo de solicitação"
-            name="id_categoria"
-            value={solicitacao?.id_categoria}
-            onChange={handleChange}
-          >
-            {categorias?.map((categoria) => (
-              <option key={categoria?.id} value={categoria?.id}>
-                {categoria?.nome}
-              </option>
-            ))}
-          </SelectCustom>
-
-          <TextArea
-            label="Descreva sua solicitação"
-            name="descricao"
-            placeholder="Descreva sua solicitação aqui..."
-            value={solicitacao?.descricao}
-            onChange={handleChange}
+            options={comunidades}
+            onChange={(newValue) => {
+              setSolicitacao((prev) => ({
+                ...prev,
+                id_comunidade: newValue ? newValue.id : "",
+              }));
+            }}
+            solicitacao={solicitacao}
+            label="Selecione a comunidade da sua solicitação"
           />
+
+          <AutoCompleteCustom
+            name="id_categoria"
+            options={categorias}
+            onChange={(newValue) => {
+              setSolicitacao((prev) => ({
+                ...prev,
+                id_categoria: newValue ? newValue.id : "",
+              }));
+            }}
+            solicitacao={solicitacao}
+            label="Selecione a categoria da sua solicitação"
+          />
+
+          <div style={{ position: 'relative' }}>
+            <TextArea
+              label="Descreva sua solicitação"
+              name="descricao"
+              placeholder="Descreva sua solicitação aqui..."
+              value={solicitacao?.descricao}
+              onChange={handleChange}
+              maxLength={256}
+            />
+            <span className="contador-letras" style={{ color: solicitacao?.descricao?.length > 246 ? 'red' : '#888' }}>
+              {256 - (solicitacao?.descricao?.length || 0)}
+            </span>
+          </div>
 
           <BtnPrimary
             onClick={() => {
