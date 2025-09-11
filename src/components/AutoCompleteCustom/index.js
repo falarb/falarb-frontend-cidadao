@@ -21,7 +21,7 @@ export default function AutoCompleteCustom({
                 className="custom-autocomplete"
                 getOptionLabel={(option) => option.nome}
                 value={value}
-                onChange={(newValue) => { onChange(newValue) }}
+                onChange={(event, newValue) => { onChange(newValue) }}
                 renderInput={(params) => <TextField {...params} placeholder={label} />}
             />
         </div>
