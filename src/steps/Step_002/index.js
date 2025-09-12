@@ -21,6 +21,7 @@ export default function Step002({
   const [isValid, setIsValid] = useState("");
   const [email, setEmail] = useState();
   const [carregando, setCarregando] = useState(false);
+  const [mensagemModal, setMensagemModal] = useState({});
 
   const handleChange = (event) => {
     setCidadao((prev) => ({
@@ -56,7 +57,19 @@ export default function Step002({
         setStep(3);
       }
     } catch (error) {
-      console.error("Erro ao enviar email:", error);
+      console.error("Erro ao verificar email:", error);
+      if (error?.response?.data?.error === "max_solicitacoes_abertas") {
+        setMensagemModal({
+          titulo: "Limite de solicitações atingido",
+          descricao: "Você atingiu o limite máximo de 5 solicitações abertas. Por favor, aguarde a resolução das solicitações existentes antes de criar uma nova.",
+        });
+      } else if (error?.response?.data?.error === "cidadao_bloqueado") {
+        setMensagemModal({
+          titulo: "Acesso bloqueado",
+          descricao: "Seu acesso ao sistema está bloqueado. Por favor, entre em contato com o suporte para mais informações.",
+        });
+      }
+
       setModalIndisponivelAberto(true);
     } finally { setCarregando(false); }
   };
@@ -81,7 +94,7 @@ export default function Step002({
             }
           }}
         >
-          
+
           <InputEmail
             label="Digite seu e-mail"
             name="email"
@@ -138,12 +151,10 @@ export default function Step002({
         {modalIndisponivelAberto && (
           <Modal
             type="warning"
-            title="Ops... Algo errado aqui..."
-            description="Estamos enfrentando dificuldades para processar sua solicitação. Em instantes tente novamente."
+            title={mensagemModal?.titulo || "Ops... Algo errado aqui..."}
+            description={mensagemModal?.descricao || "Estamos enfrentando dificuldades para processar sua solicitação. Em instantes tente novamente."}
             onCancel={() => setModalIndisponivelAberto(false)}
-            onConfirm={() => {
-              window.location.reload();
-            }}
+            onConfirm={() => setModalIndisponivelAberto(false)}
           ></Modal>
         )}
       </div>
