@@ -40,6 +40,11 @@
   border-radius: 9999px;
 }
 
+.image svg {
+  width: 45%;
+  height: 45%;
+}
+
 .danger-image {
   background-color: #fee2e2;
 }
@@ -52,16 +57,24 @@
   background-color: #cfe9ff;
 }
 
+.success-image {
+  background-color: #d1fae5;
+}
+
 .danger-image svg {
-  fill: #ff4040 !important;
+  color: #ff4040 !important;
 }
 
 .warning-image svg {
-  fill: #ff7a00 !important;
+  color: #ff7a00 !important;
 }
 
 .normal-image svg {
-  fill: #3051ff !important;
+  color: #3051ff !important;
+}
+
+.success-image svg {
+  color: #10b981 !important;
 }
 
 .modal .card .content {
@@ -100,6 +113,10 @@
 
 .modal .card .button-normal {
   background-color: #3051ff;
+}
+
+.modal .card .button-success {
+  background-color: #10b981;
 }
 
 .modal .card .desactivate {

@@ -68,6 +68,11 @@ export default function Step002({
           titulo: "Acesso bloqueado",
           descricao: "Seu acesso ao sistema está bloqueado. Por favor, entre em contato com o suporte para mais informações.",
         });
+      } else if (error?.response?.data?.error === "cidadao_inativo") {
+        setMensagemModal({
+          titulo: "Acesso inativo",
+          descricao: "Seu acesso ao sistema está desativado. Por favor, entre em contato com o suporte para mais informações.",
+        });
       }
 
       setModalIndisponivelAberto(true);
@@ -115,15 +120,6 @@ export default function Step002({
           }}
         >
           Voltar uma etapa
-        </BtnSecundary>
-
-        <BtnSecundary
-          adicionalClassName="btn-cancel"
-          onClick={() => {
-            setModalCancelAberto(true);
-          }}
-        >
-          Cancelar solicitação
         </BtnSecundary>
 
         {modalErroAberto && (
