@@ -3,10 +3,11 @@ import BtnPrimary from "../../components/Btn/BtnPrimary";
 import BtnSecundary from "../../components/Btn/BtnSecundary";
 import InputText from "../../components/Input/InputText";
 import InputCustomMask from "../../components/Input/InputCustomMask";
-import InputCPF from "../../components/Input/InputCPF";
 import Modal from "../../components/Modal";
 import "./styles.css";
 import Loading from "../../components/Loading";
+import axiosInstance from "../../utils/axiosInstance";
+import { limparCpf, limparTelefone, validarCPF } from "../../utils/functions";
 
 export default function Step006({
   cidadao,
@@ -22,6 +23,7 @@ export default function Step006({
     mensagem: "",
   });
   const [cpfValido, setCpfValido] = useState(false);
+  const [telefoneValido, setTelefoneValido] = useState(false);
   const [carregando, setCarregando] = useState(false);
 
   useEffect(() => {
@@ -42,30 +44,19 @@ export default function Step006({
 
     try {
       setCarregando(true);
-      const response = await fetch(`http://127.0.0.1:8000/api/cidadaos`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          nome: cidadao.nome,
-          email: cidadao.email,
-          telefone: cidadao.celular,
-          cpf: cidadao.cpf,
-        }),
+      const { data } = await axiosInstance.post(`/cidadaos`, {
+        nome: cidadao.nome,
+        email: cidadao.email,
+        telefone: limparTelefone(cidadao.celular),
+        cpf: limparCpf(cidadao?.cpf),
       });
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        console.error("Erro ao cadastrar cidadão - Detalhes:", errorData);
-        setModalValidacao([true, errorData]);
-        return;
-      }
-      const data = await response.json();
+
       setCidadao((prev) => ({
         ...prev,
         id: data.id,
       }));
-      setStep(3)
+
+      setStep(3);
     } catch (error) {
       setModalIndisponivelAberto(true);
       console.error("Erro ao cadastrar cidadão:", error);
@@ -73,6 +64,26 @@ export default function Step006({
     } finally {
       setCarregando(false);
     }
+  };
+
+  const verificaTelefone = (telefone) => {
+    if (!telefone) {
+      setTelefoneValido(false);
+      return;
+    }
+
+    const telefoneLimpo = limparTelefone(telefone);
+    const telefoneRegex = /^\d{11}$/; // Aceita 11 dígitos
+
+    const valido = telefoneRegex.test(telefoneLimpo);
+    setTelefoneValido(valido);
+  }
+
+  const verificaCpf = (evento) => {
+    let cpf = evento.target.value;
+
+    const valido = validarCPF(cpf);
+    setCpfValido(valido);
   };
 
   return (
@@ -99,41 +110,38 @@ export default function Step006({
         label="Qual seu celular?"
         name="celular"
         value={cidadao?.celular}
-        onChange={handleChange}
-        placeholder="99999999999"
-        mask="99999999999"
+        onChange={e => {
+          handleChange(e);
+          verificaTelefone(e.target.value);
+        }}
+        placeholder="(99) 99999-9999"
+        mask="(99) 99999-9999"
+        mensagemErro={cidadao?.celular && !telefoneValido ? "Número de celular inválido" : null}
       />
 
-      <InputCPF
+      <InputCustomMask
         label="Qual o número do seu CPF?"
         name="cpf"
         value={cidadao?.cpf}
-        onChange={handleChange}
-        placeholder="12345678910"
-        mask="99999999999"
-        setCpfValido={setCpfValido}
-        cpfValido={cpfValido}
+        onChange={e => {
+          handleChange(e);
+          verificaCpf(e);
+        }}
+        placeholder="000.000.000-00"
+        mask="999.999.999-99"
+        mensagemErro={cidadao?.cpf && !cpfValido ? "CPF inválido" : null}
       />
 
-      {console.log("Estado de validade do CPF:", cpfValido)}
-
       <BtnPrimary
-        onClick={() => {
-          if (cidadao?.nome && cidadao?.celular && cpfValido) {
-            cadastrarCidadao();
-          } else {
-            alert("Por favor, selecione corretamente os campos.");
-          }
-        }}
+        disabled={!(cidadao?.nome && telefoneValido && cpfValido)}
+        onClick={() => { cadastrarCidadao() }}
       >
         Próximo passo
       </BtnPrimary>
 
       <BtnSecundary
         adicionalClass="btn-back"
-        onClick={() => {
-          setStep(2);
-        }}
+        onClick={() => { setStep(2) }}
       >
         Voltar uma etapa
       </BtnSecundary>

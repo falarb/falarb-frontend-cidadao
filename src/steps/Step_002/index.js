@@ -83,7 +83,7 @@ export default function Step002({
     <>
       {carregando && <Loading />}
       <div className="container-step-2">
-        <h2>
+        <h2 className="welcome-text">
           Bem vindo ao <span className="accent-color">SolicitaAi</span>
         </h2>
 
@@ -111,14 +111,15 @@ export default function Step002({
             setIsValid={setIsValid}
           />
 
-          <BtnPrimary type="submit">Verificar e-mail</BtnPrimary>
+          <BtnPrimary
+            type="submit"
+            disabled={!(cidadao.email && isValid)}
+          >
+            Verificar e-mail
+          </BtnPrimary>
         </form>
 
-        <BtnSecundary
-          onClick={() => {
-            setStep(1);
-          }}
-        >
+        <BtnSecundary onClick={() => setStep(1)}>
           Voltar uma etapa
         </BtnSecundary>
 

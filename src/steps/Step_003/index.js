@@ -8,12 +8,17 @@ import moment from "moment";
 import axiosInstance from "../../utils/axiosInstance";
 import { deslogarCidadao } from "../../utils/functions";
 import Loading from "../../components/Loading";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import InputText from "../../components/Input/InputText";
 
-export default function Step003({ cidadao, step, setStep }) {
+export default function Step003({ cidadao, step, setStep, setCidadao }) {
   const [modalInfo, setModalInfo] = useState(null);
   const [carregando, setCarregando] = useState(false);
-  const enviadoRef = useRef(false);
   const [token, setToken] = useState('');
+  const [modalEditarEmail, setModalEditarEmail] = useState(false);
+  const [email, setEmail] = useState(cidadao?.email || '');
+
+  const enviadoRef = useRef(false);
 
   useEffect(() => {
     if (!cidadao.id) return;
@@ -67,15 +72,21 @@ export default function Step003({ cidadao, step, setStep }) {
     setToken(token_inserido);
   };
 
+  const handleChangeNovoEmail = (event) => {
+    const email_inserido = event.target.value;
+    setEmail(email_inserido);
+  };
+
   const reenviarToken = async () => {
     try {
       setCarregando(true);
 
-      await axiosInstance.post(`/cidadaos/envia-token/${cidadao.id}`);
+      await axiosInstance.post(`/cidadaos/envia-token/${cidadao.id}`, { reenviar_codigo: true });
       setModalInfo({
         type: "success",
         title: "Código reenviado",
         description: "O código foi reenviado para o seu e-mail.",
+        icon: faCheckCircle
       });
     } catch (error) {
       setModalInfo({
@@ -87,13 +98,56 @@ export default function Step003({ cidadao, step, setStep }) {
     } finally { setCarregando(false); }
   }
 
+  const editarEmail = async () => {
+    try {
+      setCarregando(true);
+
+      if (!email || email?.trim() === '') {
+        setModalInfo({
+          type: "warning",
+          title: "Atenção",
+          description: "O e-mail não pode estar vazio.",
+        })
+        return;
+      }
+
+      await axiosInstance.put(`/cidadaos/atualiza-email/${cidadao.id}`, { email: email.trim() });
+      setCidadao((prev) => ({
+        ...prev,
+        email: email.trim(),
+      }));
+
+      await reenviarToken();
+    } catch (error) {
+      setModalInfo({
+        type: "danger",
+        title: "Erro",
+        description: "Não foi possível alterar o e-mail. Por favor, tente novamente mais tarde.",
+      })
+
+      console.error("Erro ao editar o e-mail:", error);
+    } finally {
+      setModalEditarEmail(false);
+      setCarregando(false);
+    }
+  }
+
   return (
     <>
       {carregando && <Loading />}
       <div className="container-step-3">
         <h2>
           Insira abaixo o código que enviamos para o seu endereço de email -{" "}
-          <span className="accent-color">{cidadao?.email}</span>
+          <span className="accent-color">{cidadao?.email}</span>{" "}
+          {"( "}
+          <span
+            className="accent-color"
+            onClick={() => setModalEditarEmail(true)}
+            style={{ cursor: 'pointer', textDecoration: 'underline' }}
+          >
+            editar
+          </span>
+          {" )"}
         </h2>
 
         <form
@@ -146,10 +200,39 @@ export default function Step003({ cidadao, step, setStep }) {
             type={modalInfo?.type}
             title={modalInfo?.title}
             description={modalInfo?.description}
+            icon={modalInfo?.icon}
             onCancel={() => setModalInfo(null)}
             onConfirm={() => modalInfo?.deslogar ? deslogarCidadao() : setModalInfo(null)}
           />
         )}
+
+        {modalEditarEmail &&
+          <div className="modal">
+            <div className="card">
+              <div className="card-content">
+                <div className="content">
+                  <span className="title">Digite o novo e-mail</span>
+                  <InputText
+                    value={email}
+                    onChange={handleChangeNovoEmail}
+                    placeholder="Digite seu novo e-mail"
+                  />
+                </div>
+                <div className="actions">
+                  <button
+                    className={`desactivate button-warning`}
+                    type="button"
+                    onClick={editarEmail}
+                  >
+                    Confirmar
+                  </button>
+                  <button className="cancel" type="button" onClick={() => setModalEditarEmail(false)}>
+                    Cancelar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>}
       </div>
     </>
   );

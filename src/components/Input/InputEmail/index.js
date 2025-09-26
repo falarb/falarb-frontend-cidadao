@@ -12,16 +12,13 @@ export default function InputEmail({
   const [changed, setChanged] = useState(false);
   const isEmailValid = (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
   const isValid = isEmailValid(value);
+  setIsValid(isValid);
 
   useEffect(() => {
     if (value !== "") {
       setChanged(true);
     }
   }, [value]);
-
-  useEffect(() => {
-    setIsValid(isValid); // Passa o estado de validade pro pai
-  }, [isValid]);
 
   return (
     <div className="container-input-email">

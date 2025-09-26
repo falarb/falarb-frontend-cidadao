@@ -1,14 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-html, body, #root {
+html,
+body,
+#root {
   width: 100%;
   height: auto;
   margin: 0;
 }
 
 * {
-    font-family: 'Inter', sans-serif;
-  }
+  font-family: 'Inter', sans-serif;
+}
 
 ::-webkit-scrollbar {
   width: 7px;
@@ -27,10 +29,18 @@ html, body, #root {
   background: #555;
 }
 
-.display_none{
+.display_none {
   display: none;
 }
 
-.accent-color{
+h2.welcome-text {
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 44px;
+  color: #344054;
+  margin: 0;
+}
+
+.accent-color {
   color: #3051FF;
 }

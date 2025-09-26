@@ -1,6 +1,6 @@
 import "./styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle, faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 
 export default function Modal({
   title,
@@ -8,16 +8,14 @@ export default function Modal({
   onConfirm,
   onCancel,
   type,
+  icon
 }) {
   return (
     <div className="modal">
       <div className="card">
         <div className="card-content">
           <div className={`image ${type}-image`}>
-            {type === 'success'
-              ? <FontAwesomeIcon icon={faCheckCircle} />
-              : <FontAwesomeIcon icon={faExclamationTriangle} />
-            }
+            <FontAwesomeIcon icon={icon || faExclamationTriangle} />
           </div>
           <div className="content">
             <span className="title">{title}</span>
@@ -29,7 +27,7 @@ export default function Modal({
               type="button"
               onClick={onConfirm}
             >
-              Confimar
+              Confirmar
             </button>
             <button className="cancel" type="button" onClick={onCancel}>
               Cancelar
