@@ -80,11 +80,26 @@ export default function Step006({
   }
 
   const verificaCpf = (evento) => {
+    if (!evento.target.value) {
+      setCpfValido(false);
+      return;
+    }
+
     let cpf = evento.target.value;
 
     const valido = validarCPF(cpf);
     setCpfValido(valido);
   };
+
+  const handleDisableBtn = () => {
+    if (!cidadao?.nome || !cpfValido) {
+      return true;
+    } else if (limparTelefone(cidadao?.celular) !== '' && !telefoneValido) {
+      return true;
+    }
+
+    return false;
+  }
 
   return (
     <div className="container-step-4">
@@ -100,23 +115,11 @@ export default function Step006({
 
       <InputText
         label="Qual seu nome completo?"
+        required={true}
         name="nome"
         value={cidadao?.nome}
         onChange={handleChange}
         placeholder="Digite seu nome completo"
-      />
-
-      <InputCustomMask
-        label="Qual seu celular?"
-        name="celular"
-        value={cidadao?.celular}
-        onChange={e => {
-          handleChange(e);
-          verificaTelefone(e.target.value);
-        }}
-        placeholder="(99) 99999-9999"
-        mask="(99) 99999-9999"
-        mensagemErro={cidadao?.celular && !telefoneValido ? "Número de celular inválido" : null}
       />
 
       <InputCustomMask
@@ -129,11 +132,25 @@ export default function Step006({
         }}
         placeholder="000.000.000-00"
         mask="999.999.999-99"
-        mensagemErro={cidadao?.cpf && !cpfValido ? "CPF inválido" : null}
+        mensagemErro={limparCpf(cidadao?.cpf) !== '' && !cpfValido ? "CPF inválido" : null}
+        required={true}
+      />
+
+      <InputCustomMask
+        label="Qual seu celular?"
+        name="celular"
+        value={cidadao?.celular}
+        onChange={e => {
+          handleChange(e);
+          verificaTelefone(e.target.value);
+        }}
+        placeholder="(99) 99999-9999"
+        mask="(99) 99999-9999"
+        mensagemErro={limparTelefone(cidadao?.celular) !== '' && !telefoneValido ? "Número de celular inválido" : null}
       />
 
       <BtnPrimary
-        disabled={!(cidadao?.nome && telefoneValido && cpfValido)}
+        disabled={handleDisableBtn()}
         onClick={() => { cadastrarCidadao() }}
       >
         Próximo passo

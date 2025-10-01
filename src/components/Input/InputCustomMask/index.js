@@ -1,13 +1,19 @@
 import InputMask from 'react-input-mask';
 import './styles.css';
 
-export default function InputCustomMask({ label, mask, type, name, value, onChange, placeholder, mensagemErro }) {
+export default function InputCustomMask({ label, mask, type, name, value, onChange, placeholder, mensagemErro, required }) {
     return (
         <div className='custom-input-mask'>
-            <label>{label}</label>
+            <label>
+                {label}
+                {required
+                    ? <span className="required">*</span>
+                    : <span className='optional'>{" ("}opcional{")"}</span>}
+            </label>
+
             <InputMask
-                className='input-mask'
-                mask={mask || "(99) 99999-9999"}
+                className={`input-mask ${mensagemErro ? 'error' : ''}`}
+                mask={mask}
                 placeholder={placeholder}
                 name={name}
                 value={value}
@@ -15,7 +21,7 @@ export default function InputCustomMask({ label, mask, type, name, value, onChan
             >
                 {(inputProps) => <input type={type} {...inputProps} />}
             </InputMask>
-            
+
             {mensagemErro && <span className='error-message'>{mensagemErro}</span>}
         </div>
     );

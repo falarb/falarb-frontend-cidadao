@@ -9,11 +9,6 @@ export default function Step001({ step, setStep, onClickReviewRequest }) {
         Bem vindo ao <span className="accent-color">SolicitaAi</span>
       </h2>
 
-      <div>
-        <h4> Sistema de Solitações de Infraestrutura</h4>
-        <h4> Prefeitura Municipal de Rebouças - PR</h4>
-      </div>
-
       <p>Clique abaixo para realizar a sua solicitação</p>
 
       <BtnPrimary
