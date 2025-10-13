@@ -94,9 +94,38 @@ export default function Step005({
     }
   }, [localizacaoPermitida, handleGeolocate]);
 
+
+  const verificarMunicipio = async (latitude, longitude) => {
+    try {
+      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+      const data = await response.json();
+      const cidade = data?.address?.city || data?.address?.town || data?.address?.village || data?.address?.municipality;
+
+      if (cidade && cidade?.toLowerCase().includes("rebouças")) {
+        return true;
+      }
+
+      return false;
+    } catch (error) {
+      throw new Error("Erro ao verificar município", error);
+    }
+  }
+
   const criarsolicitação = async () => {
     try {
       setCarregando(true);
+
+      const isInReboucas = await verificarMunicipio(solicitacao.latitude, solicitacao.longitude);
+
+      if (!isInReboucas) {
+        setMessageModal({
+          titulo: "Localização fora do município",
+          descricao: "A localização selecionada não está dentro dos limites do município de Rebouças. Por favor, escolha uma localização válida dentro do município para prosseguir com a solicitação."
+        });
+
+        setModalErroAberto(true);
+        return;
+      }
 
       const { data } = await axiosInstance.post("/solicitacoes", {
         descricao: solicitacao.descricao,
