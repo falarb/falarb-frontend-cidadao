@@ -1,6 +1,6 @@
-var url = 'http://34.220.12.198/api';
+var url = 'https://solicitaaireboucas.duckdns.org/api';
 
 export const Constants = {
     baseUrl: url,
-    urlRaiz: 'http://34.220.12.198'
+    urlRaiz: 'https://solicitaaireboucas.duckdns.org',
 };
