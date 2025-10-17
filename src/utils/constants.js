@@ -1,6 +1,6 @@
-var url = 'http://127.0.0.1:8000/api';
+var url = 'http://34.220.12.198/api';
 
 export const Constants = {
     baseUrl: url,
-    urlRaiz: 'http://127.0.0.1:8000'
+    urlRaiz: 'http://34.220.12.198'
 };
