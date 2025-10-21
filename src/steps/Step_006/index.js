@@ -4,10 +4,14 @@ import BtnSecundary from "../../components/Btn/BtnSecundary";
 import InputText from "../../components/Input/InputText";
 import InputCustomMask from "../../components/Input/InputCustomMask";
 import Modal from "../../components/Modal";
+import ModalHelp from "../../components/Modal/Help";
+import { useHelp } from "../../hooks/useHelp";
+import { helpConfigs } from "../../utils/helpConfigs";
 import "./styles.css";
 import Loading from "../../components/Loading";
 import axiosInstance from "../../utils/axiosInstance";
 import { limparCpf, limparTelefone, validarCPF } from "../../utils/functions";
+import HelpIndicator from "../../components/HelpIndicator";
 
 export default function Step006({
   cidadao,
@@ -15,6 +19,7 @@ export default function Step006({
   step,
   setStep,
 }) {
+  const { isHelpOpen, closeHelp, openHelp } = useHelp(helpConfigs.step006);
   const [modalCancelAberto, setModalCancelAberto] = useState(false);
   const [modalErroAberto, setModalErroAberto] = useState(false);
   const [modalIndisponivelAberto, setModalIndisponivelAberto] = useState(false);
@@ -223,6 +228,16 @@ export default function Step006({
           )}
         ></Modal>
       )}
+
+      <ModalHelp
+        title={helpConfigs.step006.title}
+        content={helpConfigs.step006.content}
+        isOpen={isHelpOpen}
+        onClose={closeHelp}
+      />
+
+      <HelpIndicator onHelpOpen={openHelp} isOpen={!isHelpOpen} />
+
     </div>
   );
 }

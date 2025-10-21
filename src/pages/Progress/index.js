@@ -2,10 +2,13 @@ import './styles.css';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import BtnPrimary from '../../components/Btn/BtnPrimary';
 import BtnSecundary from '../../components/Btn/BtnSecundary';
+import ModalHelp from '../../components/Modal/Help';
+import { useHelp } from '../../hooks/useHelp';
+import { helpConfigs } from '../../utils/helpConfigs';
 import html2canvas from 'html2canvas';
 
 export default function Progress({ solicitacao }) {
-
+    const { isHelpOpen, closeHelp } = useHelp(helpConfigs.progress);
     const position = [solicitacao.latitude, solicitacao.longitude];
 
     const handleSaveAsImage = async () => {
@@ -100,6 +103,12 @@ export default function Progress({ solicitacao }) {
                 Voltar ao início
             </BtnPrimary>
 
+            <ModalHelp
+                title={helpConfigs.progress.title}
+                content={helpConfigs.progress.content}
+                isOpen={isHelpOpen}
+                onClose={closeHelp}
+            />
         </>
     )
 }

@@ -3,11 +3,15 @@ import BtnPrimary from "../../components/Btn/BtnPrimary";
 import BtnSecundary from "../../components/Btn/BtnSecundary";
 import TextArea from "../../components/TextArea";
 import Modal from "../../components/Modal";
+import ModalHelp from "../../components/Modal/Help";
+import { useHelp } from "../../hooks/useHelp";
+import { helpConfigs } from "../../utils/helpConfigs";
 import "./styles.css";
 import axiosInstance from "../../utils/axiosInstance";
 import Loading from "../../components/Loading";
 import { deslogarCidadao } from "../../utils/functions";
 import AutoCompleteCustom from "../../components/AutoCompleteCustom";
+import HelpIndicator from "../../components/HelpIndicator";
 
 export default function Step004({
   solicitacao,
@@ -15,6 +19,7 @@ export default function Step004({
   cidadao,
   setStep,
 }) {
+  const { isHelpOpen, closeHelp, openHelp } = useHelp(helpConfigs.step004);
   const [modalCancelAberto, setModalCancelAberto] = useState(false);
   const [modalErroAberto, setModalErroAberto] = useState(false);
   const [modalIndisponivelAberto, setModalIndisponivelAberto] = useState(false);
@@ -74,6 +79,7 @@ export default function Step004({
 
           <AutoCompleteCustom
             name="id_comunidade"
+            required
             options={comunidades}
             onChange={(newValue) => {
               setSolicitacao((prev) => ({
@@ -96,6 +102,7 @@ export default function Step004({
             }}
             solicitacao={solicitacao}
             label="Selecione a categoria da sua solicitação"
+            required
           />
 
           <div style={{ position: 'relative' }}>
@@ -164,6 +171,15 @@ export default function Step004({
               onConfirm={() => { window.location.reload() }}
             />
           )}
+
+          <ModalHelp
+            title={helpConfigs.step004.title}
+            content={helpConfigs.step004.content}
+            isOpen={isHelpOpen}
+            onClose={closeHelp}
+          />
+
+          <HelpIndicator onHelpOpen={openHelp} isOpen={!isHelpOpen} />
         </div>
       }
     </>

@@ -3,6 +3,9 @@ import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import BtnPrimary from "../../components/Btn/BtnPrimary";
 import BtnSecundary from "../../components/Btn/BtnSecundary";
 import Modal from "../../components/Modal";
+import ModalHelp from "../../components/Modal/Help";
+import { useHelp } from "../../hooks/useHelp";
+import { helpConfigs } from "../../utils/helpConfigs";
 import "leaflet/dist/leaflet.css";
 import "./styles.css";
 import L from "leaflet";
@@ -10,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import Loading from "../../components/Loading";
 import axiosInstance from "../../utils/axiosInstance";
 import { deslogarCidadao } from "../../utils/functions";
+import HelpIndicator from "../../components/HelpIndicator";
 
 // Corrige o ícone padrão do Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -25,6 +29,7 @@ export default function Step005({
   setSolicitacao,
   setStep
 }) {
+  const { isHelpOpen, closeHelp, openHelp } = useHelp(helpConfigs.step005);
   const [modalCancelAberto, setModalCancelAberto] = useState(false);
   const [modalErroAberto, setModalErroAberto] = useState(false);
   const [modalIndisponivelAberto, setModalIndisponivelAberto] = useState(false);
@@ -266,6 +271,15 @@ export default function Step005({
             onConfirm={() => setModalIndisponivelAberto(false)}
           ></Modal>
         )}
+
+        <ModalHelp
+          title={helpConfigs.step005.title}
+          content={helpConfigs.step005.content}
+          isOpen={isHelpOpen}
+          onClose={closeHelp}
+        />
+
+        <HelpIndicator onHelpOpen={openHelp} isOpen={!isHelpOpen} />
       </div>
     </>);
 }

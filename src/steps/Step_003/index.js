@@ -3,6 +3,9 @@ import BtnPrimary from "../../components/Btn/BtnPrimary";
 import BtnSecundary from "../../components/Btn/BtnSecundary";
 import InputCode from "../../components/Input/InputCode";
 import Modal from "../../components/Modal";
+import ModalHelp from "../../components/Modal/Help";
+import { useHelp } from "../../hooks/useHelp";
+import { helpConfigs } from "../../utils/helpConfigs";
 import "./styles.css";
 import moment from "moment";
 import axiosInstance from "../../utils/axiosInstance";
@@ -10,8 +13,10 @@ import { deslogarCidadao } from "../../utils/functions";
 import Loading from "../../components/Loading";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import InputText from "../../components/Input/InputText";
+import HelpIndicator from "../../components/HelpIndicator";
 
 export default function Step003({ cidadao, step, setStep, setCidadao }) {
+  const { isHelpOpen, closeHelp, openHelp } = useHelp(helpConfigs.step003);
   const [modalInfo, setModalInfo] = useState(null);
   const [carregando, setCarregando] = useState(false);
   const [token, setToken] = useState('');
@@ -233,6 +238,15 @@ export default function Step003({ cidadao, step, setStep, setCidadao }) {
               </div>
             </div>
           </div>}
+
+        <ModalHelp
+          title={helpConfigs.step003.title}
+          content={helpConfigs.step003.content}
+          isOpen={isHelpOpen}
+          onClose={closeHelp}
+        />
+
+        <HelpIndicator onHelpOpen={openHelp} isOpen={!isHelpOpen} />
       </div>
     </>
   );

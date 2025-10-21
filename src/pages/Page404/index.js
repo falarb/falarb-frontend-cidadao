@@ -1,8 +1,12 @@
 import BtnPrimary from '../../components/Btn/BtnPrimary';
+import ModalHelp from '../../components/Modal/Help';
+import { useHelp } from '../../hooks/useHelp';
+import { helpConfigs } from '../../utils/helpConfigs';
 import './styles.css'
 import { useNavigate } from "react-router-dom";
 
 export default function Page404() {
+    const { isHelpOpen, closeHelp } = useHelp(helpConfigs.page404);
     const navigate = useNavigate();
 
     return (
@@ -17,6 +21,13 @@ export default function Page404() {
             >
                 Voltar ao Início
             </BtnPrimary>
+
+            <ModalHelp
+                title={helpConfigs.page404.title}
+                content={helpConfigs.page404.content}
+                isOpen={isHelpOpen}
+                onClose={closeHelp}
+            />
         </div>
     );
 }

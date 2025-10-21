@@ -1,7 +1,13 @@
 import BtnPrimary from "../../components/Btn/BtnPrimary";
+import ModalHelp from "../../components/Modal/Help";
+import HelpIndicator from "../../components/HelpIndicator";
+import { useHelp } from "../../hooks/useHelp";
+import { helpConfigs } from "../../utils/helpConfigs";
 import "./styles.css";
 
 export default function Step001({ step, setStep, onClickReviewRequest }) {
+  const { isHelpOpen, closeHelp, openHelp } = useHelp(helpConfigs.step001);
+
   return (
     <div className="container-step-1">
 
@@ -26,6 +32,15 @@ export default function Step001({ step, setStep, onClickReviewRequest }) {
       <BtnPrimary onClick={onClickReviewRequest}>
         Acompanhar solicitação
       </BtnPrimary>
+
+      <ModalHelp
+        title={helpConfigs.step001.title}
+        content={helpConfigs.step001.content}
+        isOpen={isHelpOpen}
+        onClose={closeHelp}
+      />
+
+      <HelpIndicator onHelpOpen={openHelp} isOpen={!isHelpOpen} />
     </div >
   );
 }

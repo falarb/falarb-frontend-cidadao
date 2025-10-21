@@ -8,13 +8,17 @@ export default function AutoCompleteCustom({
     onChange,
     solicitacao,
     label = "Selecione uma opção",
+    required = false
 }) {
     const selectedId = solicitacao?.[name] || "";
     const value = options.find(opt => opt.id === selectedId) || null;
 
     return (
         <div className='container-autocomplete-custom'>
-            <p className="label-autocomplete">{label}</p>
+            <p className="label-autocomplete">
+                {label}
+                {required && <span className="required">*</span>}
+            </p>
 
             <Autocomplete
                 options={options}

@@ -11,3 +11,8 @@
     margin: 0;
     margin-bottom: 6px;
 }
+
+.required {
+    color: red;
+    margin-left: 8px;
+}

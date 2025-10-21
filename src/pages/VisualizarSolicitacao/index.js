@@ -6,13 +6,18 @@ import './styles.css';
 
 import BtnPrimary from "../../components/Btn/BtnPrimary";
 import BtnSecundary from "../../components/Btn/BtnSecundary";
+import ModalHelp from "../../components/Modal/Help";
+import { useHelp } from "../../hooks/useHelp";
+import { helpConfigs } from "../../utils/helpConfigs";
 import moment from "moment";
 import { formataCpf, formataTelefone, parseStatus, pegaCorStatus } from "../../utils/functions";
 import axiosInstance from "../../utils/axiosInstance";
 import Modal from "../../components/Modal";
 import Loading from "../../components/Loading";
+import HelpIndicator from "../../components/HelpIndicator";
 
 export default function VisualizarSolicitacao() {
+  const { isHelpOpen, closeHelp, openHelp } = useHelp(helpConfigs.visualizarSolicitacao);
   const navigate = useNavigate();
   const data = useParams();
   const token = data.token;
@@ -125,6 +130,15 @@ export default function VisualizarSolicitacao() {
             onConfirm={() => setModalIndisponivelAberto(false)}
           ></Modal>
         )}
+
+        <ModalHelp
+          title={helpConfigs.visualizarSolicitacao.title}
+          content={helpConfigs.visualizarSolicitacao.content}
+          isOpen={isHelpOpen}
+          onClose={closeHelp}
+        />
+
+        <HelpIndicator onHelpOpen={openHelp} isOpen={!isHelpOpen} />
       </div>
     </>
   );
