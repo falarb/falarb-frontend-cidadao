@@ -1,7 +1,7 @@
 import InputMask from 'react-input-mask';
 import './styles.css';
 
-export default function InputCustomMask({ label, mask, type, name, value, onChange, placeholder, mensagemErro, required }) {
+export default function InputCustomMask({ label, mask, type, name, value, onChange, placeholder, mensagemErro, required, title }) {
     return (
         <div className='custom-input-mask'>
             <label>
@@ -18,6 +18,7 @@ export default function InputCustomMask({ label, mask, type, name, value, onChan
                 name={name}
                 value={value}
                 onChange={onChange}
+                title={title}
             >
                 {(inputProps) => <input type={type} {...inputProps} />}
             </InputMask>

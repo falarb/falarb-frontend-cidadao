@@ -121,6 +121,7 @@ export default function Step006({
       <InputText
         label="Qual seu nome completo?"
         required={true}
+        title="Campo para inserir o nome completo"
         name="nome"
         value={cidadao?.nome}
         onChange={handleChange}
@@ -138,7 +139,8 @@ export default function Step006({
         placeholder="000.000.000-00"
         mask="999.999.999-99"
         mensagemErro={limparCpf(cidadao?.cpf) !== '' && !cpfValido ? "CPF inválido" : null}
-        required={true}
+        required
+        title="Campo para inserir o número do CPF"
       />
 
       <InputCustomMask
@@ -152,11 +154,13 @@ export default function Step006({
         placeholder="(99) 99999-9999"
         mask="(99) 99999-9999"
         mensagemErro={limparTelefone(cidadao?.celular) !== '' && !telefoneValido ? "Número de celular inválido" : null}
+        title="Campo para inserir o número do celular"
       />
 
       <BtnPrimary
         disabled={handleDisableBtn()}
         onClick={() => { cadastrarCidadao() }}
+        title="Botão para avançar para o próximo passo do formulário"
       >
         Próximo passo
       </BtnPrimary>
@@ -164,6 +168,7 @@ export default function Step006({
       <BtnSecundary
         adicionalClass="btn-back"
         onClick={() => { setStep(2) }}
+        title="Botão para voltar uma etapa do formulário"
       >
         Voltar uma etapa
       </BtnSecundary>
@@ -173,6 +178,7 @@ export default function Step006({
         onClick={() => {
           setModalCancelAberto(true);
         }}
+        title="Botão para cancelar a solicitação"
       >
         Cancelar solicitação
       </BtnSecundary>

@@ -80,6 +80,7 @@ export default function Step004({
           <AutoCompleteCustom
             name="id_comunidade"
             required
+            title="Seleção da comunidade para a solicitação"
             options={comunidades}
             onChange={(newValue) => {
               setSolicitacao((prev) => ({
@@ -103,6 +104,7 @@ export default function Step004({
             solicitacao={solicitacao}
             label="Selecione a categoria da sua solicitação"
             required
+            title="Seleção da categoria para a solicitação"
           />
 
           <div style={{ position: 'relative' }}>
@@ -113,6 +115,7 @@ export default function Step004({
               value={solicitacao?.descricao}
               onChange={handleChange}
               maxLength={256}
+              title="Campo para descrever a solicitação"
             />
             <span className="contador-letras" style={{ color: solicitacao?.descricao?.length > 246 ? 'red' : '#888' }}>
               {256 - (solicitacao?.descricao?.length || 0)}
@@ -131,6 +134,7 @@ export default function Step004({
                 setModalErroAberto(true);
               }
             }}
+            title="Botão para avançar para o próximo passo do formulário"
           >
             Próximo passo
           </BtnPrimary>
@@ -138,6 +142,7 @@ export default function Step004({
           <BtnSecundary
             adicionalClass="btn-cancel "
             onClick={() => { setModalCancelAberto(true) }}
+            title="Botão para cancelar a solicitação"
           >
             Cancelar solicitação
           </BtnSecundary>

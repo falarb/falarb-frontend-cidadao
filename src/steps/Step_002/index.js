@@ -106,6 +106,7 @@ export default function Step002({
           <InputEmail
             label="Digite seu e-mail"
             name="email"
+            title="Campo para inserir o e-mail"
             placeholder="exemplo@email.com"
             value={cidadao.email}
             onChange={(event) => {
@@ -116,13 +117,17 @@ export default function Step002({
 
           <BtnPrimary
             type="submit"
+            title="Botão para verificar o e-mail"
             disabled={!(cidadao.email && isValid)}
           >
             Verificar e-mail
           </BtnPrimary>
         </form>
 
-        <BtnSecundary onClick={() => setStep(1)}>
+        <BtnSecundary
+          onClick={() => setStep(1)}
+          title="Botão para voltar à etapa anterior"
+        >
           Voltar uma etapa
         </BtnSecundary>
 

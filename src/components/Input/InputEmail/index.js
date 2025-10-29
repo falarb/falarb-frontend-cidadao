@@ -8,6 +8,7 @@ export default function InputEmail({
   onChange,
   placeholder,
   setIsValid,
+  title
 }) {
   const [changed, setChanged] = useState(false);
   const isEmailValid = (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
@@ -29,6 +30,7 @@ export default function InputEmail({
         value={value}
         onChange={onChange}
         className={!isValid && changed ? "invalid" : ""}
+        title={title}
       />
       {!isValid && changed && (
         <p className="invalid-text" style={{ color: "red" }}>

@@ -13,11 +13,11 @@ export default function ModalHelp({ title, content, isOpen, onClose }) {
             <FontAwesomeIcon icon={faQuestionCircle} className="help-icon" />
             <h3>{title}</h3>
           </div>
-          <button className="modal-help-close" onClick={onClose}>
+          <button className="modal-help-close" onClick={onClose} title="Botão para fechar a ajuda">
             <FontAwesomeIcon icon={faTimes} />
           </button>
         </div>
-        
+
         <div className="modal-help-content">
           <div className="help-content">
             {typeof content === 'string' ? (
@@ -26,7 +26,7 @@ export default function ModalHelp({ title, content, isOpen, onClose }) {
               content
             )}
           </div>
-          
+
           <div className="help-footer">
             <small>💡 Pressione F1 a qualquer momento para ver esta ajuda</small>
           </div>

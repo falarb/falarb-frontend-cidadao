@@ -56,6 +56,7 @@ export default function ReviewProgress() {
             name="codigo"
             value={codigoUnico}
             onChange={handleChange}
+            title="Campo para inserir o código único da solicitação"
           />
           <BtnPrimary type="submit">Verificar</BtnPrimary>
         </form>
@@ -65,6 +66,7 @@ export default function ReviewProgress() {
           onClick={() => {
             navigate("/");
           }}
+          title="Botão para voltar à página inicial"
         >
           Voltar
         </BtnSecundary>

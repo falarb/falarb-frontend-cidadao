@@ -61,7 +61,30 @@ export default function VisualizarSolicitacao() {
           <p>Andamento da solicitação</p>
           <h1>{solicitacao?.token_solicitacao}</h1>
 
+          {console.log(solicitacao)}
+
           <span className="status" style={{ backgroundColor: pegaCorStatus(solicitacao?.status) }}>{parseStatus(solicitacao?.status)}</span>
+
+          {(solicitacao?.mot_indeferimento && solicitacao?.status === "indeferida") &&
+            <div className="box-info">
+              <span className="info">Motivo do Indeferimento</span>
+              <span className="data">{solicitacao?.mot_indeferimento}</span>
+            </div>
+          }
+
+          {(solicitacao?.data_agendamento && solicitacao?.status === "agendada") &&
+            <div className="box-info">
+              <span className="info">Data de agendamento</span>
+              <span className="data">{moment(solicitacao?.data_agendamento).format("DD/MM/YYYY")}</span>
+            </div>
+          }
+
+          {(solicitacao?.data_conclusao && solicitacao?.status === "concluida") &&
+            <div className="box-info">
+              <span className="info">Data de conclusão</span>
+              <span className="data">{moment(solicitacao?.data_conclusao).format("DD/MM/YYYY HH:mm:ss")}</span>
+            </div>
+          }
 
           <div className="box-info">
             <span className="info">Data de abertura</span>
@@ -111,12 +134,18 @@ export default function VisualizarSolicitacao() {
           </div>
         </div>
 
-        <BtnPrimary onClick={handleSaveAsImage}>Salvar comprovante</BtnPrimary>
+        <BtnPrimary
+          onClick={handleSaveAsImage}
+          title="Botão para salvar o comprovante da solicitação"
+        >
+          Salvar comprovante
+        </BtnPrimary>
 
         <BtnSecundary
           onClick={() => {
             navigate("/");
           }}
+          title="Botão para voltar ao início"
         >
           Voltar ao início
         </BtnSecundary>

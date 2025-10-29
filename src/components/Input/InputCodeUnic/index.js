@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import "./styles.css";
 
-export default function InputCodeUnic({ label, name, onChange }) {
+export default function InputCodeUnic({ label, name, onChange, title }) {
   const inputsRef = [
     useRef(null),
     useRef(null),
@@ -61,7 +61,7 @@ export default function InputCodeUnic({ label, name, onChange }) {
       <div className="code-input-wrapper">
         {inputsRef.map((ref, i) => (
           <input
-
+            title={title}
             key={i}
             ref={ref}
             type="text"

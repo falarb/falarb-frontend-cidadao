@@ -195,7 +195,10 @@ export default function Step005({
           </p>
         </div>
 
-        <BtnPrimary onClick={handleGeolocate}>
+        <BtnPrimary
+          onClick={handleGeolocate}
+          title="Botão para permitir acesso à localização atual"
+        >
           {localizacaoPermitida ? "Ir para localização atual" : "Permitir acesso à localização atual"}
         </BtnPrimary>
 
@@ -220,6 +223,7 @@ export default function Step005({
 
         <BtnPrimary
           adicionalClass="success"
+          title="Botão para criar a solicitação"
           onClick={() => {
             if (solicitacao.latitude && solicitacao.longitude) {
               criarsolicitação();
@@ -231,13 +235,18 @@ export default function Step005({
           Criar solicitação
         </BtnPrimary>
 
-        <BtnSecundary adicionalClass="btn-back" onClick={() => setStep(4)}>
+        <BtnSecundary
+          adicionalClass="btn-back"
+          onClick={() => setStep(4)}
+          title="Botão para voltar à etapa anterior"
+        >
           Voltar uma etapa
         </BtnSecundary>
 
         <BtnSecundary
           adicionalClass="btn-cancel"
           onClick={() => setModalCancelAberto(true)}
+          title="Botão para cancelar a solicitação"
         >
           Cancelar solicitação
         </BtnSecundary>

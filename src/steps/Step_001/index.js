@@ -20,6 +20,7 @@ export default function Step001({ step, setStep, onClickReviewRequest }) {
       <BtnPrimary
         adicionalClass="success"
         onClick={() => { setStep(2) }}
+        title="Clique para entrar no fluxo de criar solicitação"
       >
         Realizar solicitação
       </BtnPrimary>
@@ -29,7 +30,10 @@ export default function Step001({ step, setStep, onClickReviewRequest }) {
         único.
       </p>
 
-      <BtnPrimary onClick={onClickReviewRequest}>
+      <BtnPrimary
+        onClick={onClickReviewRequest}
+        title="Clique para acompanhar as atualizações da sua solicitação"
+      >
         Acompanhar solicitação
       </BtnPrimary>
 

@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import './styles.css';
 
-export default function InputCode({ label, name, onChange }) {
+export default function InputCode({ label, name, onChange, title }) {
   const inputsRef = [
     useRef(null),
     useRef(null),
@@ -35,6 +35,7 @@ export default function InputCode({ label, name, onChange }) {
           <input
             key={i}
             ref={ref}
+            title={title}
             type="text"
             maxLength={1}
             className="code-box"

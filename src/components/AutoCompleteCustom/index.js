@@ -7,6 +7,7 @@ export default function AutoCompleteCustom({
     options,
     onChange,
     solicitacao,
+    title,
     label = "Selecione uma opção",
     required = false
 }) {
@@ -22,6 +23,7 @@ export default function AutoCompleteCustom({
 
             <Autocomplete
                 options={options}
+                title={title}
                 className="custom-autocomplete"
                 getOptionLabel={(option) => option.nome}
                 value={value}

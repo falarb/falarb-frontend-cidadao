@@ -35,7 +35,7 @@ export const helpConfigs = {
             <div>
                 <p><strong>Nessa etapa será verificado o código enviado para seu e-mail</strong></p>
                 <p>Para garantirmos a segurança da sua solicitação, precisamos validar o código que foi enviado para o seu e-mail.</p>
-                <p>Foi enviado um código de verificação para o e-mail que você cadastrou. Por favor, verifique sua caixa de entrada e insira o código</p>
+                <p>Por favor, verifique sua caixa de entrada e insira o código</p>
             </div>
         )
     },

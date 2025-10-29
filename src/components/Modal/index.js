@@ -25,11 +25,17 @@ export default function Modal({
             <button
               className={`desactivate button-${type}`}
               type="button"
+              title="Botão para confirmar a ação descrita"
               onClick={onConfirm}
             >
               Confirmar
             </button>
-            <button className="cancel" type="button" onClick={onCancel}>
+            <button
+              className="cancel"
+              type="button"
+              onClick={onCancel}
+              title="Botão para cancelar a ação descrita"
+            >
               Cancelar
             </button>
           </div>

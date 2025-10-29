@@ -176,18 +176,29 @@ export default function Step003({ cidadao, step, setStep, setCidadao }) {
             placeholder="1234"
             mask="9999"
             value={token}
+            title="Código de verificação de 4 dígitos"
             onChange={handleChange}
           />
 
-          <BtnPrimary type="submit">Verificar</BtnPrimary>
+          <BtnPrimary
+            type="submit"
+            title="Botão para validar o código inserido"
+          >
+            Verificar
+          </BtnPrimary>
         </form>
 
-        <BtnSecundary adicionalClass="btn-back" onClick={reenviarToken}>
+        <BtnSecundary
+          adicionalClass="btn-back"
+          onClick={reenviarToken}
+          title="Botão para reenviar o código de verificação para o e-mail cadastrado"
+        >
           Não recebi o código
         </BtnSecundary>
 
         <BtnSecundary
           adicionalClass="btn-cancel"
+          title="Botão para cancelar o seguimento da solicitação"
           onClick={() => {
             setModalInfo({
               type: "warning",
@@ -218,6 +229,7 @@ export default function Step003({ cidadao, step, setStep, setCidadao }) {
                 <div className="content">
                   <span className="title">Digite o novo e-mail</span>
                   <InputText
+                    title="Campo para inserir o novo e-mail"
                     value={email}
                     onChange={handleChangeNovoEmail}
                     placeholder="Digite seu novo e-mail"
@@ -227,11 +239,19 @@ export default function Step003({ cidadao, step, setStep, setCidadao }) {
                   <button
                     className={`desactivate button-warning`}
                     type="button"
+                    title="Botão para salvar o novo e-mail"
                     onClick={editarEmail}
+                    disabled={carregando}
                   >
                     Confirmar
                   </button>
-                  <button className="cancel" type="button" onClick={() => setModalEditarEmail(false)}>
+
+                  <button
+                    className="cancel"
+                    type="button"
+                    onClick={() => setModalEditarEmail(false)}
+                    title="Botão para cancelar a alteração do e-mail"
+                  >
                     Cancelar
                   </button>
                 </div>

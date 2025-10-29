@@ -1,6 +1,6 @@
 import './styles.css'
 
-export default function InputText({ label, type, name, value, onChange, adicionalClass, placeholder, required }) {
+export default function InputText({ label, type, name, value, onChange, adicionalClass, placeholder, required, title }) {
     return (
         <div className="container-input">
             <label>
@@ -11,6 +11,7 @@ export default function InputText({ label, type, name, value, onChange, adiciona
                 className={`${adicionalClass} input-text`}
                 type={type}
                 name={name}
+                title={title}
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder}
