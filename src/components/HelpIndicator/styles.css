@@ -1,0 +1,68 @@
+.help-indicator {
+    position: fixed;
+    top: 40px;
+    right: 65px;
+    z-index: 1000;
+    cursor: pointer;
+    animation: slideInFromRight 0.5s ease-out, pulse 2s infinite ease-in-out;
+}
+
+.help-indicator-content {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
+    display: flex;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.help-indicator-content:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(102, 126, 234, 0.5);
+}
+
+.help-indicator-icon {
+    font-size: 24px;
+    color: #fbbf24;
+}
+
+
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@media (max-width: 768px) {
+    .help-indicator {
+        top: 90%;
+        right: 10px;
+        width: max-content;
+    }
+
+    .help-indicator-content {
+        min-width: auto;
+        max-width: none;
+        padding: 14px 16px;
+    }
+}
