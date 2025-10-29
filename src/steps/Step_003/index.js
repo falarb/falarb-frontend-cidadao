@@ -251,6 +251,7 @@ export default function Step003({ cidadao, step, setStep, setCidadao }) {
                     type="button"
                     onClick={() => setModalEditarEmail(false)}
                     title="Botão para cancelar a alteração do e-mail"
+                    disabled={carregando}
                   >
                     Cancelar
                   </button>
