@@ -1,6 +1,6 @@
-var url = 'http://127.0.0.1:8000/api';
+var url = 'https://api.solicitaai-reboucas.com.br/api';
 
 export const Constants = {
     baseUrl: url,
-    urlRaiz: 'http://127.0.0.1:8000',
+    urlRaiz: 'https://api.solicitaai-reboucas.com.br/api',
 };
