@@ -12,6 +12,7 @@ import Loading from "../../components/Loading";
 import { deslogarCidadao } from "../../utils/functions";
 import AutoCompleteCustom from "../../components/AutoCompleteCustom";
 import HelpIndicator from "../../components/HelpIndicator";
+import InputText from "../../components/Input/InputText";
 
 export default function Step004({
   solicitacao,
@@ -59,6 +60,18 @@ export default function Step004({
     buscaDados();
   }, [cidadao.id, setSolicitacao]);
 
+  const handleDisableBtn = () => {
+    if (!solicitacao?.id_comunidade || !solicitacao.id_categoria) {
+      return true;
+    }
+
+    if (solicitacao?.id_comunidade === 'liCbRHaRMbhWtRJsRMxQ0aht' && !solicitacao?.additional_address) {
+      return true;
+    }
+
+    return false;
+  }
+
   return (
     <>
       {carregando
@@ -92,6 +105,18 @@ export default function Step004({
             label="Selecione a comunidade da sua solicitação"
           />
 
+          {solicitacao?.id_comunidade === 'liCbRHaRMbhWtRJsRMxQ0aht' &&
+            <InputText
+              label="Digite seu endereço completo"
+              required={true}
+              title="Campo para inserir o endereço completo"
+              name="additional_address"
+              value={solicitacao?.additional_address}
+              onChange={handleChange}
+              placeholder="Bairro, Rua, Número, Complemento (se houver)"
+            />
+          }
+
           <AutoCompleteCustom
             name="id_categoria"
             options={categorias}
@@ -123,18 +148,9 @@ export default function Step004({
           </div>
 
           <BtnPrimary
-            onClick={() => {
-              if (
-                solicitacao?.id_comunidade !== "" &&
-                solicitacao?.id_categoria !== "" &&
-                solicitacao?.id_cidadao !== ""
-              ) {
-                setStep(5);
-              } else {
-                setModalErroAberto(true);
-              }
-            }}
+            onClick={() => { setStep(5) }}
             title="Botão para avançar para o próximo passo do formulário"
+            disabled={handleDisableBtn()}
           >
             Próximo passo
           </BtnPrimary>

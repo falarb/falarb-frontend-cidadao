@@ -61,8 +61,6 @@ export default function VisualizarSolicitacao() {
           <p>Andamento da solicitação</p>
           <h1>{solicitacao?.token_solicitacao}</h1>
 
-          {console.log(solicitacao)}
-
           <span className="status" style={{ backgroundColor: pegaCorStatus(solicitacao?.status) }}>{parseStatus(solicitacao?.status)}</span>
 
           {(solicitacao?.mot_indeferimento && solicitacao?.status === "indeferida") &&
@@ -115,6 +113,13 @@ export default function VisualizarSolicitacao() {
             <span className="info">Comunidade da solicitação</span>
             <span className="data">{solicitacao?.comunidade.nome}</span>
           </div>
+
+          {(solicitacao?.comunidade?.nome === 'Centro' && solicitacao?.additional_address) &&
+            <div className="box-info">
+              <span className="info">Endereço completo</span>
+              <span className="data">{solicitacao?.additional_address}</span>
+            </div>
+          }
 
           <div className="box-info">
             <span className="info">Tipo da solicitação</span>

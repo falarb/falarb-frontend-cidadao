@@ -139,6 +139,7 @@ export default function Step005({
         id_comunidade: solicitacao.id_comunidade,
         longitude: solicitacao.longitude,
         latitude: solicitacao.latitude,
+        additional_address: solicitacao?.additional_address || null,
       });
 
       setSolicitacao(data);
