@@ -209,7 +209,7 @@ export default function Step005({
         >
           <MapContainer
             center={mapCenter}
-            zoom={13}
+            zoom={16}
             style={{ height: "100%", width: "100%" }}
           >
             <TileLayer

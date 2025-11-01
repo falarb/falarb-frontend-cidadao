@@ -73,14 +73,14 @@ export default function VisualizarSolicitacao() {
           {(solicitacao?.data_agendamento && solicitacao?.status === "agendada") &&
             <div className="box-info">
               <span className="info">Data de agendamento</span>
-              <span className="data">{moment(solicitacao?.data_agendamento).format("DD/MM/YYYY")}</span>
+              <span className="data">{moment(solicitacao?.data_agendamento).add(3, 'hours').format("DD/MM/YYYY")}</span>
             </div>
           }
 
           {(solicitacao?.data_conclusao && solicitacao?.status === "concluida") &&
             <div className="box-info">
               <span className="info">Data de conclusão</span>
-              <span className="data">{moment(solicitacao?.data_conclusao).format("DD/MM/YYYY HH:mm:ss")}</span>
+              <span className="data">{moment(solicitacao?.data_conclusao).add(3, 'hours').format("DD/MM/YYYY")}</span>
             </div>
           }
 

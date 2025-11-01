@@ -60,6 +60,10 @@ export default function Step004({
     buscaDados();
   }, [cidadao.id, setSolicitacao]);
 
+  const getComunidadeSelecionada = () => {
+    return comunidades.find(comunidade => comunidade?.id === solicitacao?.id_comunidade) || null;
+  };
+
   const handleDisableBtn = () => {
     if (!solicitacao?.id_comunidade || !solicitacao.id_categoria) {
       return true;
@@ -70,6 +74,25 @@ export default function Step004({
     }
 
     return false;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (handleDisableBtn()) {
+      setModalErroAberto(true);
+      return;
+    }
+
+    const comunidadeSelecionada = getComunidadeSelecionada();
+    if (comunidadeSelecionada?.nome !== 'Centro') {
+      setSolicitacao((prev) => ({
+        ...prev,
+        additional_address: '',
+      }));
+    }
+
+    setStep(5);
   }
 
   return (
@@ -105,7 +128,7 @@ export default function Step004({
             label="Selecione a comunidade da sua solicitação"
           />
 
-          {solicitacao?.id_comunidade === 'liCbRHaRMbhWtRJsRMxQ0aht' &&
+          {getComunidadeSelecionada()?.nome === 'Centro' &&
             <InputText
               label="Digite seu endereço completo"
               required={true}
@@ -148,7 +171,7 @@ export default function Step004({
           </div>
 
           <BtnPrimary
-            onClick={() => { setStep(5) }}
+            onClick={(e) => handleSubmit(e)}
             title="Botão para avançar para o próximo passo do formulário"
             disabled={handleDisableBtn()}
           >
